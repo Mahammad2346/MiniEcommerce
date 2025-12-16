@@ -7,8 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MiniEcommerce.Application\MiniEcommerce.Application.csproj" />
-    <ProjectReference Include="..\MiniEcommerce.Domain\MiniEcommerce.Domain.csproj" />
+    <ProjectReference Include="..\MiniEcommerce.Domain\MiniEcommerce.BusinessLogicLayer.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace MiniEcommerce.Infrastructure
+﻿namespace MiniEcommerce.DataAccessLayer
 {
     public class Class1
     {

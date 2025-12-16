@@ -1,4 +1,4 @@
-﻿namespace MiniEcommerce.Domain
+﻿namespace MiniEcommerce.BusinessLogicLayer
 {
     public class Class1
     {

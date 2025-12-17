@@ -11,11 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
-
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\MiniEcommerce.DataAccessLayer\MiniEcommerce.DataAccessLayer.csproj" />
   </ItemGroup>
 
 </Project>

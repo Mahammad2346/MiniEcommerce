@@ -1,6 +1,8 @@
 
 using Microsoft.EntityFrameworkCore;
 using MiniEcommerce.DataAccessLayer.Context;
+using MiniEcommerce.DataAccessLayer.Repositories;
+using MiniEcommerce.DataAccessLayer.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +13,16 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 
+
 builder.Services.AddDbContext<MiniEcommerceDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly("MiniEcommerce.DataAccessLayer")
+    ));
+
+
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

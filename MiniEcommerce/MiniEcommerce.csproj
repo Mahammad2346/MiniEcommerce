@@ -11,8 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MiniEcommerce.Application\MiniEcommerce.Application.csproj" />
-    <ProjectReference Include="..\MiniEcommerce.Infrastructure\MiniEcommerce.DataAccessLayer.csproj" />
+
   </ItemGroup>
 
   <ItemGroup>

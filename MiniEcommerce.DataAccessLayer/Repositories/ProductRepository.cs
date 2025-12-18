@@ -5,34 +5,44 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace MiniEcommerce.DataAccessLayer.Repositories
 {
     public class ProductRepository : IProductRepository
     {
         private readonly MiniEcommerceDbContext _context;
+
         public ProductRepository(MiniEcommerceDbContext context)
         {
-                _context = context; 
+            _context = context;
         }
-        public void Add(Product product)
+        public Task AddAsync(Product product)
+            {
+                _context.Products.Add(product);
+                return Task.CompletedTask;  
+            }
+
+        public async Task<IEnumerable<Product>> GetAllAsync(int pageNumber, int pageSize)
         {
-            _context.Products.Add(product); 
+           return await _context.Products
+                .AsNoTracking()
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
         }
 
-        public Product? GetById(int id)
+        public async Task<Product?> GetByIdAsync(int id)
         {
-            return _context.Products.FirstOrDefault(p=>p.Id == id);
+            return await _context.Products.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);    
         }
 
-        public IEnumerable<Product> GetAll()
+        public async Task SaveAsync()
         {
-           return _context.Products.ToList();
+            await _context.SaveChangesAsync();
         }
 
-        public void Save()
-        {
-            _context.SaveChanges();
-        }
+
+
     }
 }

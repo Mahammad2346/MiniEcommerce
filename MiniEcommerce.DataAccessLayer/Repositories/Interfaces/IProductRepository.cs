@@ -7,10 +7,13 @@ namespace MiniEcommerce.DataAccessLayer.Repositories.Interfaces
 {
     public interface IProductRepository
     {
-        IEnumerable<Product> GetAll();
-        Product? GetById(int id);
-        void Add(Product product);
 
-        void Save();
+        Task<IEnumerable<Product>> GetAllAsync(int pageNumber, int pageSize);
+
+        Task<Product?> GetByIdAsync(int id);
+
+        Task AddAsync(Product product);
+
+        Task SaveAsync();
     }
 }

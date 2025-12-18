@@ -20,6 +20,7 @@ namespace MiniEcommerce.DataAccessLayer.Extensions
                 ));
 
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
 
             return services;
         }

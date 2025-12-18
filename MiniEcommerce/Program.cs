@@ -1,5 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
+using MiniEcommerce.DataAccessLayer.Extensions;
 using MiniEcommerce.DataAccessLayer.Context;
 using MiniEcommerce.DataAccessLayer.Repositories;
 using MiniEcommerce.DataAccessLayer.Repositories.Interfaces;
@@ -14,14 +15,16 @@ builder.Services.AddOpenApi();
 
 
 
-builder.Services.AddDbContext<MiniEcommerceDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        b => b.MigrationsAssembly("MiniEcommerce.DataAccessLayer")
-    ));
+//builder.Services.AddDbContext<MiniEcommerceDbContext>(options =>
+//    options.UseSqlServer(
+//        builder.Configuration.GetConnectionString("DefaultConnection"),
+//        b => b.MigrationsAssembly("MiniEcommerce.DataAccessLayer")
+//    ));
 
 
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
+//builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+builder.Services.AddDataAccessLayer(builder.Configuration);
 
 var app = builder.Build();
 

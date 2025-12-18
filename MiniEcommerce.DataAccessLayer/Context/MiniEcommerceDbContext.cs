@@ -20,7 +20,6 @@ namespace MiniEcommerce.DataAccessLayer.Context
         {
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
-            base.OnModelCreating(modelBuilder);
 
         }
     }

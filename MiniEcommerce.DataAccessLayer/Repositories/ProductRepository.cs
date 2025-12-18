@@ -25,8 +25,12 @@ namespace MiniEcommerce.DataAccessLayer.Repositories
 
         public async Task<IEnumerable<Product>> GetAllAsync(int pageNumber, int pageSize)
         {
+            if (pageNumber < 1)
+                pageNumber = 1;
+
            return await _context.Products
                 .AsNoTracking()
+                .OrderBy(p=>p.Id)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();

@@ -15,10 +15,8 @@ namespace MiniEcommerce.DataAccessLayer.Extensions
         {
             services.AddDbContext<MiniEcommerceDbContext>(options =>
                 options.UseSqlServer(
-                    configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly("MiniEcommerce.DataAccessLayer")
+                    configuration.GetConnectionString("DefaultConnection")
                 ));
-
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
 

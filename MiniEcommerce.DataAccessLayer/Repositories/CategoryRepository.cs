@@ -8,21 +8,14 @@ using System.Text;
 
 namespace MiniEcommerce.DataAccessLayer.Repositories
 {
-    public class CategoryRepository : ICategoryRepository
+    public class CategoryRepository(MiniEcommerceDbContext context) : ICategoryRepository
     {
-        private readonly MiniEcommerceDbContext _context;
-
-        public CategoryRepository(MiniEcommerceDbContext context)
-        {
-            _context = context;
-        }
-        public Task AddAsync(Category category)
+        private readonly MiniEcommerceDbContext _context = context;
+        public void Add(Category category)
         {
             _context.Categories.Add(category);
-            return Task.CompletedTask;  
         }
-
-        public async Task<IEnumerable<Category>> GetAllAsync(int pageNumber, int pageSize)
+        public async Task<IEnumerable<Category>> GetAllAsync(int pageNumber, int pageSize, CancellationToken cancellationToken)
         {
             if (pageNumber < 1)
                 pageNumber = 1;
@@ -32,17 +25,15 @@ namespace MiniEcommerce.DataAccessLayer.Repositories
                 .OrderBy(c=>c.Id)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
         }
-
-        public async Task<Category?> GetByIdAsync(int id)
+        public async Task<Category?> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
-            return await _context.Categories.AsNoTracking().FirstOrDefaultAsync(c=>c.Id == id);
+            return await _context.Categories.AsNoTracking().FirstOrDefaultAsync(c=>c.Id == id, cancellationToken);
         }
-
-        public async Task SaveAsync()
+        public async Task SaveAsync(CancellationToken cancellationToken)
         {
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

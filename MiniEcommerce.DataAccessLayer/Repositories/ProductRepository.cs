@@ -8,22 +8,15 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
 namespace MiniEcommerce.DataAccessLayer.Repositories
-{
-    public class ProductRepository : IProductRepository
+{   
+    public class ProductRepository(MiniEcommerceDbContext context) : IProductRepository
     {
-        private readonly MiniEcommerceDbContext _context;
-
-        public ProductRepository(MiniEcommerceDbContext context)
-        {
-            _context = context;
-        }
-        public Task AddAsync(Product product)
+        private readonly MiniEcommerceDbContext _context = context;    
+        public void Add(Product product)
             {
                 _context.Products.Add(product);
-                return Task.CompletedTask;  
             }
-
-        public async Task<IEnumerable<Product>> GetAllAsync(int pageNumber, int pageSize)
+        public async Task<IEnumerable<Product>> GetAllAsync(int pageNumber, int pageSize, CancellationToken cancellationToken)
         {
             if (pageNumber < 1)
                 pageNumber = 1;
@@ -33,20 +26,16 @@ namespace MiniEcommerce.DataAccessLayer.Repositories
                 .OrderBy(p=>p.Id)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
         }
 
-        public async Task<Product?> GetByIdAsync(int id)
+        public async Task<Product?> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
-            return await _context.Products.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);    
+            return await _context.Products.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id, cancellationToken);    
         }
-
-        public async Task SaveAsync()
+        public async Task SaveAsync(CancellationToken cancellationToken)
         {
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
         }
-
-
-
     }
 }

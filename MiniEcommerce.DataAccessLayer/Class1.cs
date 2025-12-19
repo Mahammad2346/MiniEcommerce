@@ -1,7 +1,6 @@
-﻿namespace MiniEcommerce.DataAccessLayer
-{
-    public class Class1
-    {
+﻿namespace MiniEcommerce.DataAccessLayer;
 
-    }
+public class Class1
+{
+
 }

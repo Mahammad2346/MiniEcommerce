@@ -4,19 +4,25 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>f5d276f2-1232-431e-8970-275a082ac058</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\MiniEcommerce.Application\MiniEcommerce.Application.csproj" />
-    <ProjectReference Include="..\MiniEcommerce.Infrastructure\MiniEcommerce.DataAccessLayer.csproj" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <ProjectReference Include="..\MiniEcommerce.BusinessLogicLayer\MiniEcommerce.BusinessLogicLayer.csproj" />
+	  <ProjectReference Include="..\MiniEcommerce.DataAccessLayer\MiniEcommerce.DataAccessLayer.csproj" />
+
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,6 @@
-﻿namespace MiniEcommerce.BusinessLogicLayer
-{
-    public class Class1
-    {
+﻿namespace MiniEcommerce.BusinessLogicLayer;
 
-    }
+public class Class1
+{
+
 }

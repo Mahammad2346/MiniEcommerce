@@ -1,6 +1,5 @@
 <Solution>
-  <Project Path="MiniEcommerce.Application/MiniEcommerce.Application.csproj" />
-  <Project Path="MiniEcommerce.Domain/MiniEcommerce.BusinessLogicLayer.csproj" />
-  <Project Path="MiniEcommerce.Infrastructure/MiniEcommerce.DataAccessLayer.csproj" />
+  <Project Path="MiniEcommerce.BusinessLogicLayer/MiniEcommerce.BusinessLogicLayer.csproj" />
+  <Project Path="MiniEcommerce.DataAccessLayer/MiniEcommerce.DataAccessLayer.csproj" />
   <Project Path="MiniEcommerce/MiniEcommerce.csproj" />
 </Solution>

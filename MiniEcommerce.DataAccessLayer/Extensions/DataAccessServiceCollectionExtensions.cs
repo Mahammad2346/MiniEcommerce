@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MiniEcommerce.BusinessLogicLayer.Entities;
 using MiniEcommerce.DataAccessLayer.Context;
 using MiniEcommerce.DataAccessLayer.Repositories;
 using MiniEcommerce.DataAccessLayer.Repositories.Interfaces;
@@ -17,8 +18,8 @@ public static class DataAccessServiceCollectionExtensions
             options.UseSqlServer(
                 configuration.GetConnectionString("DefaultConnection")
             ));
-        services.AddScoped<IProductRepository, ProductRepository>();
-        services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IRepository<Category>, Repository<Category>>();
+        services.AddScoped<IRepository<Product>, Repository<Product>>();
 
         return services;
     }

@@ -3,7 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using MiniEcommerce.DataAccessLayer.Extensions;
 using MiniEcommerce.DataAccessLayer.Context;
 using MiniEcommerce.DataAccessLayer.Repositories;
-using MiniEcommerce.DataAccessLayer.Repositories.Interfaces;
+using MiniEcommerce.Contracts.Interfaces;
+using Mapster;
+using MapsterMapper;
+using MiniEcommerce.BusinessLogicLayer.Extentions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +20,7 @@ builder.Services.AddOpenApi();
 
 
 builder.Services.AddDataAccessLayer(builder.Configuration);
+builder.Services.AddMapping();
 
 var app = builder.Build();
 

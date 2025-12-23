@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MiniEcommerce.Contracts.Interfaces;
 using MiniEcommerce.DataAccessLayer.Context;
-using MiniEcommerce.DataAccessLayer.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,7 +17,22 @@ public class Repository<T>(MiniEcommerceDbContext context) : IRepository<T> wher
             DbSet.Add(entity);  
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync(int pageNumber, int pageSize, CancellationToken cancellationToken)
+    public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken)
+    {
+        return await DbSet.AnyAsync(predicate, cancellationToken);
+    }
+
+    public void Delete(T entity)
+    {
+        DbSet.Remove(entity);   
+    }
+
+    public async Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken)
+    {
+        return await DbSet.FirstOrDefaultAsync(predicate, cancellationToken);
+    }
+
+    public async Task<IEnumerable<T>> GetAllAsync(int pageNumber, int pageSize, CancellationToken cancellationToken)
         {
             if (pageNumber < 1)
                 pageNumber = 1;
@@ -33,7 +49,12 @@ public class Repository<T>(MiniEcommerceDbContext context) : IRepository<T> wher
             return await DbSet.FindAsync(id, cancellationToken);
         }
 
-        public async Task SaveAsync(CancellationToken cancellationToken)
+    public IQueryable<T> Query()
+    {
+        return DbSet.AsQueryable();
+    }
+
+    public async Task SaveAsync(CancellationToken cancellationToken)
         {
             await context.SaveChangesAsync(cancellationToken);
         }

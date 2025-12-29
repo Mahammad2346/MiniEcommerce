@@ -1,28 +1,32 @@
 ﻿using Mapster;
-using Microsoft.IdentityModel.Tokens;
 using MiniEcommerce.BusinessLogicLayer.Dtos;
+using MiniEcommerce.BusinessLogicLayer.Exceptions.Category;
 using MiniEcommerce.BusinessLogicLayer.Interfaces;
 using MiniEcommerce.Contracts.Entities;
 using MiniEcommerce.Contracts.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MiniEcommerce.BusinessLogicLayer.Services
 {
     public class CategoryService(IUnitOfWork unitOfWork) : ICategoryService
     {
-        public async Task<CategoryDto> CreateCategoryAsync(string categoryName, CancellationToken cancellationToken)
+        private async Task<Category> GetCategoryOrThrowAsync(int categoryId, CancellationToken cancellationToken)
+        {
+            var category = await unitOfWork.Categories.FirstOrDefaultAsync(c => c.Id == categoryId, cancellationToken);
+            if (category is null)
+                throw new CategoryNotFoundException(categoryId);
+            return category;
+        }
+        public async Task<CategoryDto> CreateCategoryAsync(CreateCategoryDto dto, CancellationToken cancellationToken)
         {
 
-            if (string.IsNullOrWhiteSpace(categoryName))
-                throw new ArgumentException("Category Name cant be empty", nameof(categoryName));
-            var categoryExist = await unitOfWork.Categories.AnyAsync(c => c.Name == categoryName, cancellationToken);
+            if (string.IsNullOrWhiteSpace(dto.Name))
+                throw new CategoryNameEmptyException();
+            var categoryExist = await unitOfWork.Categories.AnyAsync(c => c.Name == dto.Name, cancellationToken);
 
             if (categoryExist)
-                throw new ArgumentException("Category already exist", nameof(categoryName));
+                throw new CategoryAlreadyExistsException(dto.Name);
 
-            var category = new Category { Name = categoryName };
+            var category = new Category { Name = dto.Name };
             unitOfWork.Categories.Add(category);
             await unitOfWork.SaveChangesAsync(cancellationToken);
             return category.Adapt<CategoryDto>();
@@ -31,34 +35,32 @@ namespace MiniEcommerce.BusinessLogicLayer.Services
         public async Task<CategoryDto> DeleteCategoryAsync(int categoryId, CancellationToken cancellationToken)
         {
             if (categoryId <= 0)
-                throw new ArgumentException("Category Id must be greater than 0", nameof(categoryId));
-            var category = await unitOfWork.Categories.FirstOrDefaultAsync(c => c.Id == categoryId, cancellationToken);
+                throw new InvalidCategoryIdException(categoryId);
+            var category = await GetCategoryOrThrowAsync(categoryId, cancellationToken);
             var hasProducts = await unitOfWork.Products.AnyAsync(p=>p.CategoryId == categoryId, cancellationToken);
-            if (category is null)
-                throw new ArgumentException("Category doesnt exist", nameof(categoryId));
+   
             if (hasProducts)
-                throw new ArgumentException("Category has at least one Product, cant be removed");
+                throw new CategoryHasProductsException(categoryId);
             unitOfWork.Categories.Delete(category);
             await unitOfWork.SaveChangesAsync(cancellationToken);
             return category.Adapt<CategoryDto>();
         }
 
-        public async Task<CategoryDto> UpdateCategoryAsync(int categoryId, string newName, CancellationToken cancellationToken)
+        public async Task<CategoryDto> UpdateCategoryAsync(int categoryId, UpdateCategoryDto dto, CancellationToken cancellationToken)
         {
             if (categoryId <= 0)
-                throw new ArgumentException("Category Id must be greater than 0", nameof(categoryId));
-            if (string.IsNullOrWhiteSpace(newName))
-                throw new ArgumentException("Category cant be empty", nameof(newName));
-            var category = await unitOfWork.Categories.FirstOrDefaultAsync(c=>c.Id == categoryId, cancellationToken);
-            if (category is null)
-                throw new ArgumentException("Category doesnt exist");
+                throw new InvalidCategoryIdException(categoryId);
+            if (string.IsNullOrWhiteSpace(dto.Name))
+                throw new CategoryNameEmptyException();
+            var category = await GetCategoryOrThrowAsync(categoryId, cancellationToken);
+           
             
-            var duplicatedCategory = await unitOfWork.Categories.AnyAsync(c=>c.Id != categoryId &&  c.Name == newName, cancellationToken);
+            var duplicatedCategory = await unitOfWork.Categories.AnyAsync(c=>c.Id != categoryId && c.Name == dto.Name, cancellationToken);
 
             if (duplicatedCategory)
-                throw new ArgumentException("Category already exist", nameof(categoryId));
+                throw new CategoryAlreadyExistsException(dto.Name);
 
-            category.Name = newName;
+            category.Name = dto.Name;
             await unitOfWork.SaveChangesAsync(cancellationToken);   
             return category.Adapt<CategoryDto>();
         }

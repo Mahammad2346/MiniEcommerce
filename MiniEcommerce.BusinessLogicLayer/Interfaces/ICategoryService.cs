@@ -8,15 +8,8 @@ namespace MiniEcommerce.BusinessLogicLayer.Interfaces
 {
     public interface ICategoryService
     {
-        Task<CategoryDto> CreateCategoryAsync(
-            string categoryName,
-            CancellationToken cancellationToken);
-        Task<CategoryDto> UpdateCategoryAsync(
-            int categoryId,
-            string newName,
-            CancellationToken cancellationToken);
-        Task<CategoryDto> DeleteCategoryAsync(
-            int categoryId,
-            CancellationToken cancellationToken);
+        Task<CategoryDto> CreateCategoryAsync(CreateCategoryDto dto, CancellationToken cancellationToken);
+        Task<CategoryDto> UpdateCategoryAsync(int categoryId, UpdateCategoryDto dto, CancellationToken cancellationToken);
+        Task<CategoryDto> DeleteCategoryAsync(int categoryId, CancellationToken cancellationToken);
     }   
 }

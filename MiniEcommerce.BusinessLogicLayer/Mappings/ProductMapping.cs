@@ -11,9 +11,8 @@ namespace MiniEcommerce.BusinessLogicLayer.Mappings
     {
         public void Register(TypeAdapterConfig config) 
         {
-            config.NewConfig<Product, ProductDto>();
-            config.NewConfig<ProductDto, Product>();    
-        
+            config.NewConfig<Product, UpdateProductDto>();
+            config.NewConfig<UpdateProductDto, Product>();    
         }  
     }
 }

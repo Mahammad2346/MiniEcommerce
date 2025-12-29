@@ -1,11 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
 using MiniEcommerce.DataAccessLayer.Extensions;
-using MiniEcommerce.DataAccessLayer.Context;
-using MiniEcommerce.DataAccessLayer.Repositories;
-using MiniEcommerce.Contracts.Interfaces;
-using Mapster;
-using MapsterMapper;
 using MiniEcommerce.BusinessLogicLayer.Extentions;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -6,20 +6,16 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MiniEcommerce.DataAccessLayer
+namespace MiniEcommerce.DataAccessLayer;
+
+public class UnitOfWork(MiniEcommerceDbContext dbContext) : IUnitOfWork
 {
-    public class UnitOfWork(MiniEcommerceDbContext dbContext) : IUnitOfWork
-    {
-        private readonly IRepository<Product> _productRepository = new Repository<Product>(dbContext);
-        private readonly IRepository<Category> _categoryRepository = new Repository<Category>(dbContext);
+    private readonly Lazy<IRepository<Product>> _products = new(() => new Repository<Product>(dbContext));
 
-        public IRepository<Product> Products => _productRepository;
+    private readonly Lazy<IRepository<Category>> _categories = new(() => new Repository<Category>(dbContext));
 
-        public IRepository<Category> Categories => _categoryRepository;
+    public IRepository<Product> Products => _products.Value;
+    public IRepository<Category> Categories => _categories.Value;
 
-        public Task<int> SaveChangesAsync(CancellationToken cancellationToken)
-        {
-            return dbContext.SaveChangesAsync(cancellationToken); ;
-        }
-    }
+    public Task<int> SaveChangesAsync(CancellationToken cancellationToken) => dbContext.SaveChangesAsync(cancellationToken);
 }

@@ -1,31 +1,31 @@
-﻿using MiniEcommerce.Contracts.Entities;
-using MiniEcommerce.BusinessLogicLayer.Interfaces;
-using MiniEcommerce.Contracts.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Mapster;
 using Microsoft.EntityFrameworkCore;
 using MiniEcommerce.BusinessLogicLayer.Dtos;
-using Mapster;
+using MiniEcommerce.BusinessLogicLayer.Exceptions.Category;
+using MiniEcommerce.BusinessLogicLayer.Exceptions.Common;
+using MiniEcommerce.BusinessLogicLayer.Exceptions.Product;
+using MiniEcommerce.BusinessLogicLayer.Interfaces;
+using MiniEcommerce.Contracts.Entities;
+using MiniEcommerce.Contracts.Interfaces;
 
 namespace MiniEcommerce.BusinessLogicLayer.Services
 {
     public class ProductService(IUnitOfWork unitOfWork) : IProductService
     {
-        public async Task<ProductDto> CreateProductAsync(string name, decimal price, int categoryId, CancellationToken cancellationToken)
+        public async Task<ProductDto> CreateProductAsync(CreateProductDto dto, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentNullException("Product name cant be empty", nameof(name));
-            if (price < 0)
-                throw new ArgumentOutOfRangeException("Product price must be greater than zero");
-            var categorExist = await unitOfWork.Categories.AnyAsync(c => c.Id == categoryId, cancellationToken);
+            if (string.IsNullOrWhiteSpace(dto.Name))
+                throw new ProductNameEmptyException();
+            if (dto.Price < 0)
+                throw new InvalidProductPriceException(dto.Price);
+            var categorExist = await unitOfWork.Categories.AnyAsync(c => c.Id == dto.CategoryId, cancellationToken);
             if (!categorExist)
-                throw new ArgumentException("Category does not exist");
-            var productExist = await unitOfWork.Products.AnyAsync(p => p.Name == name && p.CategoryId == categoryId, cancellationToken);
+                throw new CategoryNotFoundException(dto.CategoryId);
+            var productExist = await unitOfWork.Products.AnyAsync(p => p.Name == dto.Name && p.CategoryId == dto.CategoryId, cancellationToken);
             if (productExist)
-                throw new ArgumentException("A product with the same name already exist in this category");
+                throw new ProductAlreadyExistsException(dto.Name, dto.CategoryId);
 
-            var product = new Product { Name = name, Price = price, CategoryId = categoryId };
+            var product = new Product { Name = dto.Name, Price = dto.Price, CategoryId = dto.CategoryId };
             unitOfWork.Products.Add(product);
             await unitOfWork.SaveChangesAsync(cancellationToken);
             return product.Adapt<ProductDto>();
@@ -35,7 +35,7 @@ namespace MiniEcommerce.BusinessLogicLayer.Services
         {
             var product = await unitOfWork.Products.FirstOrDefaultAsync(p => p.Id == productId, cancellationToken);
             if (product is null)
-                throw new ArgumentException("Product doesnt exist", nameof(productId));
+                throw new ProductNotFoundException(productId);  
             unitOfWork.Products.Delete(product);
             await unitOfWork.SaveChangesAsync(cancellationToken);
             return product.Adapt<ProductDto>();
@@ -45,17 +45,15 @@ namespace MiniEcommerce.BusinessLogicLayer.Services
         {
             var product = await unitOfWork.Products.FirstOrDefaultAsync(p => p.Id == productId, cancellationToken);
             if (product is null)
-                throw new ArgumentException("Not found", nameof(product));
+                throw new ProductNotFoundException(productId);
             return product.Adapt<ProductDto>();
         }
 
         public async Task<IReadOnlyList<ProductDto>> GetProductsAsync(int pageNumber, int pageSize, int? categoryId, CancellationToken cancellationToken)
         {
-            if (pageNumber <= 0)
-                throw new ArgumentOutOfRangeException(nameof(pageNumber));
+            if (pageNumber <= 0 || pageSize <= 0)
+                throw new InvalidPaginationException(pageNumber, pageSize);
 
-            if (pageSize <= 0)
-                throw new ArgumentOutOfRangeException(nameof(pageSize));
             IQueryable<Product> products = unitOfWork.Products.Query();
             if (categoryId is not null)
                 products = products.Where(p => p.CategoryId == categoryId);
@@ -65,30 +63,30 @@ namespace MiniEcommerce.BusinessLogicLayer.Services
             return productList.Adapt<IReadOnlyList<ProductDto>>();
         }
 
-        public async Task<ProductDto> UpdateProductAsync(int productId, string newName, decimal newPrice, int newCategoryId, CancellationToken cancellationToken)
+        public async Task<ProductDto> UpdateProductAsync(int productId, UpdateProductDto dto, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(newName))
-                throw new ArgumentException("Product Name cant be empty", nameof(newName));
-            if (newPrice < 0)
-                throw new ArgumentException("New Price must be greater than zero");
+            if (string.IsNullOrWhiteSpace(dto.Name))
+                throw new ProductNameEmptyException();
+            if (dto.Price < 0)
+                throw new InvalidProductPriceException(dto.Price);
             var product = await unitOfWork.Products.FirstOrDefaultAsync(p => p.Id == productId, cancellationToken);
             if (product is null)
-                throw new ArgumentException("Product does not exist", nameof(product));
-            if (product.CategoryId != newCategoryId)
+                throw new ProductNotFoundException(productId);
+            if (product.CategoryId != dto.CategoryId)
             {
-                var categoryExist = await unitOfWork.Categories.AnyAsync(c => c.Id == newCategoryId, cancellationToken);
+                var categoryExist = await unitOfWork.Categories.AnyAsync(c => c.Id == dto.CategoryId, cancellationToken);
                 if (!categoryExist)
-                    throw new ArgumentException("Category doesnt exist");
-                product.CategoryId = newCategoryId;
+                    throw new CategoryNotFoundException(dto.CategoryId);
+                product.CategoryId = dto.CategoryId;
             }
 
-            var duplicateExist = await unitOfWork.Products.AnyAsync(p => p.Id != productId && p.Name == newName && p.CategoryId == product.CategoryId, cancellationToken);
+            var duplicateExist = await unitOfWork.Products.AnyAsync(p => p.Id != productId && p.Name == dto.Name && p.CategoryId == product.CategoryId, cancellationToken);
 
             if (duplicateExist)
-                throw new ArgumentException("A product with same name already exist in this category");
+                throw new ProductAlreadyExistsException(dto.Name, product.CategoryId);
 
-            product.Name = newName;
-            product.Price = newPrice;
+            product.Name = dto.Name;
+            product.Price = dto.Price;
             await unitOfWork.SaveChangesAsync(cancellationToken);
             return product.Adapt<ProductDto>();
         }

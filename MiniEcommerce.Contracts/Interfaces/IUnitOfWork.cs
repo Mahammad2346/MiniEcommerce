@@ -3,13 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MiniEcommerce.Contracts.Interfaces
-{
-    public interface IUnitOfWork
-    {
-        IRepository<Product> Products { get; }
-        IRepository<Category> Categories { get; }
+namespace MiniEcommerce.Contracts.Interfaces;
 
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
-    }
+public interface IUnitOfWork
+{
+    IProductRepository Products { get; }
+    IRepository<Category> Categories { get; }
+
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

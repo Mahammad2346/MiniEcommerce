@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MiniEcommerce.BusinessLogicLayer.Dtos
-{
-    public class UpdateProductDto
-    {
-        public string Name { get; init; } = null!;
-        public decimal Price { get; init; }
-        public string Description { get; init; } = null!;
-        public int CategoryId { get; init; }
-    }
-}
+namespace MiniEcommerce.BusinessLogicLayer.Dtos;
+
+public record UpdateProductDto
+(   
+    string Name,
+    decimal Price,
+    string Description,
+    int CategoryId
+);

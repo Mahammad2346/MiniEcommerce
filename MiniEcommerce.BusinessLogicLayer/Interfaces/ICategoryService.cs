@@ -4,12 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MiniEcommerce.BusinessLogicLayer.Interfaces
+namespace MiniEcommerce.BusinessLogicLayer.Interfaces;
+
+public interface ICategoryService
 {
-    public interface ICategoryService
-    {
-        Task<CategoryDto> CreateCategoryAsync(CreateCategoryDto dto, CancellationToken cancellationToken);
-        Task<CategoryDto> UpdateCategoryAsync(int categoryId, UpdateCategoryDto dto, CancellationToken cancellationToken);
-        Task<CategoryDto> DeleteCategoryAsync(int categoryId, CancellationToken cancellationToken);
-    }   
-}
+    Task<CategoryDto> CreateCategoryAsync(CreateCategoryDto dto, CancellationToken cancellationToken);
+    Task<CategoryDto> UpdateCategoryAsync(int categoryId, UpdateCategoryDto dto, CancellationToken cancellationToken);
+    Task<CategoryDto> DeleteCategoryAsync(int categoryId, CancellationToken cancellationToken);
+}   

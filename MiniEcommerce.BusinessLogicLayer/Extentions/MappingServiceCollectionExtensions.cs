@@ -6,20 +6,19 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace MiniEcommerce.BusinessLogicLayer.Extentions
+namespace MiniEcommerce.BusinessLogicLayer.Extentions;
+
+public static class MappingServiceCollectionExtensions
 {
-    public static class MappingServiceCollectionExtensions
+    public static IServiceCollection AddMapping(this IServiceCollection services)
     {
-        public static IServiceCollection AddMapping(this IServiceCollection services)
-        {
-            var config = TypeAdapterConfig.GlobalSettings;
-            config.Scan(typeof(MappingServiceCollectionExtensions).Assembly);
+        var config = TypeAdapterConfig.GlobalSettings;
+        config.Scan(typeof(MappingServiceCollectionExtensions).Assembly);
 
-            services.AddSingleton(config);
-            services.AddScoped<IMapper, ServiceMapper>();
+        services.AddSingleton(config);
+        services.AddScoped<IMapper, ServiceMapper>();
 
-            return services;
-        }
-
+        return services;
     }
+
 }

@@ -8,87 +8,75 @@ using MiniEcommerce.BusinessLogicLayer.Interfaces;
 using MiniEcommerce.Contracts.Entities;
 using MiniEcommerce.Contracts.Interfaces;
 
-namespace MiniEcommerce.BusinessLogicLayer.Services
+namespace MiniEcommerce.BusinessLogicLayer.Services;
+
+public class ProductService(IUnitOfWork unitOfWork) : IProductService
 {
-    public class ProductService(IUnitOfWork unitOfWork) : IProductService
+    private async Task ValidateProductAsync(string name, decimal price, int categoryId, int? excludedProductId, int? currentCategoryId, CancellationToken cancellationToken)
     {
-        public async Task<ProductDto> CreateProductAsync(CreateProductDto dto, CancellationToken cancellationToken)
-        {
-            if (string.IsNullOrWhiteSpace(dto.Name))
-                throw new ProductNameEmptyException();
-            if (dto.Price < 0)
-                throw new InvalidProductPriceException(dto.Price);
-            var categorExist = await unitOfWork.Categories.AnyAsync(c => c.Id == dto.CategoryId, cancellationToken);
-            if (!categorExist)
-                throw new CategoryNotFoundException(dto.CategoryId);
-            var productExist = await unitOfWork.Products.AnyAsync(p => p.Name == dto.Name && p.CategoryId == dto.CategoryId, cancellationToken);
-            if (productExist)
-                throw new ProductAlreadyExistsException(dto.Name, dto.CategoryId);
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ProductNameEmptyException();
 
-            var product = new Product { Name = dto.Name, Price = dto.Price, CategoryId = dto.CategoryId };
-            unitOfWork.Products.Add(product);
-            await unitOfWork.SaveChangesAsync(cancellationToken);
-            return product.Adapt<ProductDto>();
+        if (price < 0)
+            throw new InvalidProductPriceException(price);
+
+        if (excludedProductId == null || currentCategoryId != categoryId)
+        {
+            var categoryExist = await unitOfWork.Categories.AnyAsync(c => c.Id == categoryId, cancellationToken);
+            if(!categoryExist)
+                throw new CategoryNotFoundException(categoryId);
         }
 
-        public async Task<ProductDto> DeleteProductAsync(int productId, CancellationToken cancellationToken)
-        {
-            var product = await unitOfWork.Products.FirstOrDefaultAsync(p => p.Id == productId, cancellationToken);
-            if (product is null)
-                throw new ProductNotFoundException(productId);  
-            unitOfWork.Products.Delete(product);
-            await unitOfWork.SaveChangesAsync(cancellationToken);
-            return product.Adapt<ProductDto>();
-        }
+        var productExist = await unitOfWork.Products.AnyAsync(p => p.Name == name && p.CategoryId == categoryId && (excludedProductId == null || p.Id != excludedProductId), cancellationToken);
 
-        public async Task<ProductDto> GetProduct(int productId, CancellationToken cancellationToken)
-        {
-            var product = await unitOfWork.Products.FirstOrDefaultAsync(p => p.Id == productId, cancellationToken);
-            if (product is null)
-                throw new ProductNotFoundException(productId);
-            return product.Adapt<ProductDto>();
-        }
+        if (productExist)
+            throw new ProductAlreadyExistsException(name, categoryId);
+    }
+    public async Task<ProductDto> CreateProductAsync(CreateProductDto dto, CancellationToken cancellationToken)
+    {
+        await ValidateProductAsync(dto.Name, dto.Price, dto.CategoryId, null, null, cancellationToken);
+        var product = dto.Adapt<Product>();
+        unitOfWork.Products.Add(product);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+        return product.Adapt<ProductDto>();
+    }
 
-        public async Task<IReadOnlyList<ProductDto>> GetProductsAsync(int pageNumber, int pageSize, int? categoryId, CancellationToken cancellationToken)
-        {
-            if (pageNumber <= 0 || pageSize <= 0)
-                throw new InvalidPaginationException(pageNumber, pageSize);
+    public async Task<ProductDto> DeleteProductAsync(int productId, CancellationToken cancellationToken)
+    {
+        var product = await unitOfWork.Products.FirstOrDefaultAsync(p => p.Id == productId, cancellationToken);
+        if (product is null)
+            throw new ProductNotFoundException(productId);  
+        unitOfWork.Products.Delete(product);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+        return product.Adapt<ProductDto>();
+    }
 
-            IQueryable<Product> products = unitOfWork.Products.Query();
-            if (categoryId is not null)
-                products = products.Where(p => p.CategoryId == categoryId);
+    public async Task<ProductDto> GetProduct(int productId, CancellationToken cancellationToken)
+    {
+        var product = await unitOfWork.Products.FirstOrDefaultAsync(p => p.Id == productId, cancellationToken);
+        if (product is null)
+            throw new ProductNotFoundException(productId);
+        return product.Adapt<ProductDto>();
+    }
 
-            var productList = await products.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
+    public async Task<IReadOnlyList<ProductDto>> GetProductsAsync(int pageNumber, int pageSize, int? categoryId, CancellationToken cancellationToken)
+    {
+        if (pageNumber <= 0 || pageSize <= 0)
+            throw new InvalidPaginationException(pageNumber, pageSize);
 
-            return productList.Adapt<IReadOnlyList<ProductDto>>();
-        }
+        var products = await unitOfWork.Products.GetProductsAsync(pageNumber, pageSize, categoryId, cancellationToken);
 
-        public async Task<ProductDto> UpdateProductAsync(int productId, UpdateProductDto dto, CancellationToken cancellationToken)
-        {
-            if (string.IsNullOrWhiteSpace(dto.Name))
-                throw new ProductNameEmptyException();
-            if (dto.Price < 0)
-                throw new InvalidProductPriceException(dto.Price);
-            var product = await unitOfWork.Products.FirstOrDefaultAsync(p => p.Id == productId, cancellationToken);
-            if (product is null)
-                throw new ProductNotFoundException(productId);
-            if (product.CategoryId != dto.CategoryId)
-            {
-                var categoryExist = await unitOfWork.Categories.AnyAsync(c => c.Id == dto.CategoryId, cancellationToken);
-                if (!categoryExist)
-                    throw new CategoryNotFoundException(dto.CategoryId);
-                product.CategoryId = dto.CategoryId;
-            }
+        return products.Adapt<IReadOnlyList<ProductDto>>();
+    }
 
-            var duplicateExist = await unitOfWork.Products.AnyAsync(p => p.Id != productId && p.Name == dto.Name && p.CategoryId == product.CategoryId, cancellationToken);
-
-            if (duplicateExist)
-                throw new ProductAlreadyExistsException(dto.Name, product.CategoryId);
-
-            product.Name = dto.Name;
-            product.Price = dto.Price;
-            await unitOfWork.SaveChangesAsync(cancellationToken);
-            return product.Adapt<ProductDto>();
-        }
+    public async Task<ProductDto> UpdateProductAsync(int productId, UpdateProductDto dto, CancellationToken cancellationToken)
+    {
+        var product = await unitOfWork.Products.FirstOrDefaultAsync(p => p.Id == productId, cancellationToken);
+        if(product is null)
+            throw new ProductNotFoundException(productId);  
+        await ValidateProductAsync(dto.Name, dto.Price, dto.CategoryId, productId, product.CategoryId, cancellationToken);
+        dto.Adapt(product);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+        return product.Adapt<ProductDto>();
     }
 }

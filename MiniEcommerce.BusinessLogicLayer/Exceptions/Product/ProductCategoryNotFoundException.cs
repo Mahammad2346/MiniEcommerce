@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MiniEcommerce.BusinessLogicLayer.Exceptions.Product
+namespace MiniEcommerce.BusinessLogicLayer.Exceptions.Product;
+
+public sealed class ProductCategoryNotFoundException : Exception
 {
-    public sealed class ProductCategoryNotFoundException : Exception
-    {
-        public ProductCategoryNotFoundException(int categoryId) : base($"Category with id '{categoryId}' was not found.") { }
-    }
+    public ProductCategoryNotFoundException(int categoryId) : base($"Category with id '{categoryId}' was not found.") { }
 }

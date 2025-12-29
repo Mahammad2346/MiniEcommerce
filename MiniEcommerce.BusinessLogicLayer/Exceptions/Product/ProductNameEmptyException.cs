@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MiniEcommerce.BusinessLogicLayer.Exceptions.Product
+namespace MiniEcommerce.BusinessLogicLayer.Exceptions.Product;
+
+public sealed class ProductNameEmptyException : Exception
 {
-    public sealed class ProductNameEmptyException : Exception
-    {
-        public ProductNameEmptyException() : base("Product name cannot be empty."){}
-    }
+    public ProductNameEmptyException() : base("Product name cannot be empty."){}
 }

@@ -5,7 +5,7 @@ using System.Text;
 namespace MiniEcommerce.BusinessLogicLayer.Dtos;
 
 public record CategoryDto
-(
-         int Id,
-         string Name
+(   
+    int Id,
+    string Name
 );

@@ -24,9 +24,8 @@ public class Repository<T>(MiniEcommerceDbContext context) : IRepository<T> wher
 
     public void Delete(T entity)
     {
-        DbSet.Remove(entity);   
+        DbSet.Remove(entity);
     }
-
     public async Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken)
     {
         return await DbSet.FirstOrDefaultAsync(predicate, cancellationToken);
@@ -44,18 +43,8 @@ public class Repository<T>(MiniEcommerceDbContext context) : IRepository<T> wher
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken)
-        {
-            return await DbSet.FindAsync(id, cancellationToken);
-        }
-
-    public IQueryable<T> Query()
+    public async Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
-        return DbSet.AsQueryable();
+        return await DbSet.FindAsync(id, cancellationToken);
     }
-
-    public async Task SaveAsync(CancellationToken cancellationToken)
-        {
-            await context.SaveChangesAsync(cancellationToken);
-        }
 }

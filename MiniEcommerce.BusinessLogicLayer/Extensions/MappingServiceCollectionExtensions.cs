@@ -6,8 +6,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace MiniEcommerce.BusinessLogicLayer.Extentions;
-
+namespace MiniEcommerce.BusinessLogicLayer.Extensions;
 public static class MappingServiceCollectionExtensions
 {
     public static IServiceCollection AddMapping(this IServiceCollection services)
@@ -20,5 +19,4 @@ public static class MappingServiceCollectionExtensions
 
         return services;
     }
-
 }

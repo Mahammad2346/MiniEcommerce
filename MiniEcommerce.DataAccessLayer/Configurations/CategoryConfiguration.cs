@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MiniEcommerce.BusinessLogicLayer.Entities;
+using MiniEcommerce.Contracts.Entities;
 
 namespace MiniEcommerce.DataAccessLayer.Configurations;
 

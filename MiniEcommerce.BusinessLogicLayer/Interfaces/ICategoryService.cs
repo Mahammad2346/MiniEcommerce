@@ -1,0 +1,14 @@
+﻿using MiniEcommerce.BusinessLogicLayer.Dtos;
+using MiniEcommerce.Contracts.Entities;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace MiniEcommerce.BusinessLogicLayer.Interfaces;
+
+public interface ICategoryService
+{
+    Task<CategoryDto> CreateCategoryAsync(CreateCategoryDto dto, CancellationToken cancellationToken);
+    Task<CategoryDto> UpdateCategoryAsync(int categoryId, UpdateCategoryDto dto, CancellationToken cancellationToken);
+    Task<CategoryDto> DeleteCategoryAsync(int categoryId, CancellationToken cancellationToken);
+}   

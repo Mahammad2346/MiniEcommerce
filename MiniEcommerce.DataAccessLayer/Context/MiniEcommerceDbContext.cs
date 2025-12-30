@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MiniEcommerce.BusinessLogicLayer.Entities;
+using MiniEcommerce.Contracts.Entities;
 using MiniEcommerce.DataAccessLayer.Configurations;
 using System;
 using System.Collections.Generic;

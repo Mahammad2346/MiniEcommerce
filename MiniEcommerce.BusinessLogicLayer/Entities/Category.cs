@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MiniEcommerce.Contracts.Entities;
+namespace MiniEcommerce.BusinessLogicLayer.Entities;
 public class Category
 {
     public int Id { get; set; }

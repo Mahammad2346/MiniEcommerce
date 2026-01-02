@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MiniEcommerce.Contracts.Entities;
+using MiniEcommerce.BusinessLogicLayer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;

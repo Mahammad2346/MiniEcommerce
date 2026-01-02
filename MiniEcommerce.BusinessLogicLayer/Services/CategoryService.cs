@@ -61,4 +61,16 @@ public class CategoryService(IUnitOfWork unitOfWork) : ICategoryService
         await unitOfWork.SaveChangesAsync(cancellationToken);   
         return category.Adapt<CategoryDto>();
     }
+
+    public async Task<IReadOnlyList<CategoryDto>> GetAllCategoriesAsync(int pageNumber, int pageSize, CancellationToken cancellationToken)
+    {
+        var categories = await unitOfWork.Categories.GetAllAsync(pageNumber, pageSize, cancellationToken);
+        return categories.Select(c => c.Adapt<CategoryDto>()).ToList();
+    }
+
+    public async Task<CategoryDto> GetCategoryById(int categoryId, CancellationToken cancellationToken)
+    {
+        var category = await GetCategoryOrThrowAsync(categoryId, cancellationToken);
+        return category.Adapt<CategoryDto>();
+    }
 }

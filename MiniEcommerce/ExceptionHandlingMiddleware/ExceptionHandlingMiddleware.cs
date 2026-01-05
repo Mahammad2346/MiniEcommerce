@@ -1,6 +1,7 @@
 ﻿using MiniEcommerce.BusinessLogicLayer.Exceptions.Category;
 using MiniEcommerce.BusinessLogicLayer.Exceptions.Common;
 using MiniEcommerce.BusinessLogicLayer.Exceptions.Product;
+using MiniEcommerce.Responses;
 using System.Net;
 using System.Text.Json;
 
@@ -66,10 +67,7 @@ public class ExceptionHandlingMiddleware
                 break;
         }
 
-        var response = new
-        {
-            error = message
-        };
+        var response = ApiResponse<string>.Fail(message);
 
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)statusCode;

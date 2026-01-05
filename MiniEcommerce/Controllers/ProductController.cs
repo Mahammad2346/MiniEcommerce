@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MiniEcommerce.BusinessLogicLayer.Dtos;
 using MiniEcommerce.BusinessLogicLayer.Interfaces;
+using MiniEcommerce.Responses;
 
 namespace MiniEcommerce.Api.Controllers;
 
@@ -16,28 +17,28 @@ public class ProductsController(IProductService productService) : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var products = await productService.GetProductsAsync(pageNumber, pageSize, categoryId, cancellationToken);
-        return Ok(products);
+        return Ok(ApiResponse<IReadOnlyList<ProductDto>>.Ok(products));
     }
 
     [HttpGet("{productId:int}")]
     public async Task<IActionResult> GetProductById([FromRoute] int productId, CancellationToken cancellationToken)
     {
         var product = await productService.GetProduct(productId, cancellationToken);
-        return Ok(product);
+        return Ok(ApiResponse<ProductDto>.Ok(product));
     }
 
     [HttpPost]
     public async Task<IActionResult> CreateProduct( [FromBody] CreateProductDto dto,CancellationToken cancellationToken)
     {
         var createdProduct = await productService.CreateProductAsync(dto, cancellationToken);
-        return CreatedAtAction(nameof(GetProductById), new { productId = createdProduct.Id },createdProduct);
+        return CreatedAtAction(nameof(GetProductById), new { productId = createdProduct.Id }, ApiResponse<ProductDto>.Ok(createdProduct));
     }
 
     [HttpPut("{productId:int}")]
     public async Task<IActionResult> UpdateProduct( [FromRoute] int productId, [FromBody] UpdateProductDto dto, CancellationToken cancellationToken)
     {
         var updatedProduct = await productService.UpdateProductAsync(productId, dto, cancellationToken);
-        return Ok(updatedProduct);
+        return Ok(ApiResponse<ProductDto>.Ok(updatedProduct));
     }
 
     [HttpDelete("{productId:int}")]

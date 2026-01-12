@@ -68,7 +68,7 @@ public class CategoryService(IUnitOfWork unitOfWork) : ICategoryService
         return categories.Select(c => c.Adapt<CategoryDto>()).ToList();
     }
 
-    public async Task<CategoryDto> GetCategoryById(int categoryId, CancellationToken cancellationToken)
+    public async Task<CategoryDto> GetCategoryByIdAsync(int categoryId, CancellationToken cancellationToken)
     {
         var category = await GetCategoryOrThrowAsync(categoryId, cancellationToken);
         return category.Adapt<CategoryDto>();

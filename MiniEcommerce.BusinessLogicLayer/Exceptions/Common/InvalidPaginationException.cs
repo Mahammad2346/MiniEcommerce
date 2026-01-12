@@ -1,7 +1,9 @@
-﻿namespace MiniEcommerce.BusinessLogicLayer.Exceptions.Common;
+﻿using System.Net;
 
-public sealed class InvalidPaginationException : Exception
+namespace MiniEcommerce.BusinessLogicLayer.Exceptions.Common;
+
+public sealed class InvalidPaginationException : AppException
 {
     public InvalidPaginationException(int pageNumber, int pageSize)
-        : base($"Invalid pagination values. PageNumber: {pageNumber}, PageSize: {pageSize}. Both must be greater than zero.") {}
+        : base($"Invalid pagination values. PageNumber: {pageNumber}, PageSize: {pageSize}. Both must be greater than zero.", HttpStatusCode.BadRequest) {}
 }

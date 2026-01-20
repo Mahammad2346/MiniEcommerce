@@ -8,6 +8,8 @@ namespace MiniEcommerce.BusinessLogicLayer.Interfaces;
 
 public interface ICategoryService
 {
+    Task<IReadOnlyList<CategoryDto>> GetAllCategoriesAsync(int pageNumber, int pageSize, CancellationToken cancellationToken);
+    Task<CategoryDto> GetCategoryByIdAsync(int categoryId, CancellationToken cancellationToken);
     Task<CategoryDto> CreateCategoryAsync(CreateCategoryDto dto, CancellationToken cancellationToken);
 	Task<CategoryDto> GetCategoryByIdAsync(int categoryId, CancellationToken cancellationToken);
 

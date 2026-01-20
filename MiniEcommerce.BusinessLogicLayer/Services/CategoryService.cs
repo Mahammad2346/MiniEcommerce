@@ -61,4 +61,10 @@ public class CategoryService(IUnitOfWork unitOfWork) : ICategoryService
         await unitOfWork.SaveChangesAsync(cancellationToken);   
         return category.Adapt<CategoryDto>();
     }
+
+	public async Task<CategoryDto> GetCategoryByIdAsync(int categoryId, CancellationToken cancellationToken)
+	{
+		var category = await GetCategoryOrThrowAsync(categoryId, cancellationToken);
+		return category.Adapt<CategoryDto>();
+	}
 }

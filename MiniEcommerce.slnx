@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="MiniEcommerce.BusinessLogicLayer.Tests/MiniEcommerce.BusinessLogicLayer.Tests.csproj" Id="355c3096-032c-42a0-a055-a60a326992c2" />
   <Project Path="MiniEcommerce.BusinessLogicLayer/MiniEcommerce.BusinessLogicLayer.csproj" />
   <Project Path="MiniEcommerce.Contracts/MiniEcommerce.Contracts.csproj" Id="a32e6dcc-02a0-4241-aeba-08331eecc295" />
   <Project Path="MiniEcommerce.DataAccessLayer/MiniEcommerce.DataAccessLayer.csproj" />

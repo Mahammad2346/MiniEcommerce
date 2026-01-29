@@ -26,11 +26,12 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar
       - name: Cache SonarQube Cloud scanner
         id: cache-sonar-scanner
-        name: SonarQube
+name: SonarQube
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    branches:
+      - master
 
 jobs:
   build:
@@ -46,36 +47,39 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          distribution: zulu
           java-version: 17
+          distribution: zulu
 
-      - name: Cache SonarCloud scanner
+      - name: Cache SonarQube scanner
         uses: actions/cache@v4
         with:
-          path: ${{ runner.temp }}\scanner
-          key: ${{ runner.os }}-sonar-scanner
-          restore-keys: ${{ runner.os }}-sonar-scanner
+          path: ~\sonar\cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
 
-      - name: Install SonarCloud scanner
+      - name: Install SonarQube scanner
         shell: powershell
         run: |
-          New-Item -Path ${{ runner.temp }}\scanner -ItemType Directory -Force
-          dotnet tool update dotnet-sonarscanner --tool-path ${{ runner.temp }}\scanner
+          dotnet tool install --global dotnet-sonarscanner
 
-      - name: Build and analyze
+      - name: SonarQube begin
+        shell: powershell
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        shell: powershell
         run: |
-          $scanner = "${{ runner.temp }}\scanner\dotnet-sonarscanner"
-
-          & $scanner begin `
+          dotnet-sonarscanner begin `
             /k:"Mahammad2346_MiniEcommerce" `
             /o:"mahammad2346" `
             /d:sonar.token="$env:SONAR_TOKEN"
 
-          dotnet build
+      - name: Build
+        run: dotnet build
 
-          & $scanner end `
+      - name: SonarQube end
+        shell: powershell
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          dotnet-sonarscanner end `
             /d:sonar.token="$env:SONAR_TOKEN"
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using MiniEcommerce.BusinessLogicLayer.Exceptions.User;
 using MiniEcommerce.Contracts.Entities;
 using MiniEcommerce.Contracts.Enums;
 using MiniEcommerce.Contracts.Interfaces;
@@ -16,9 +17,9 @@ namespace MiniEcommerce.BusinessLogicLayer.Services
             var existingUser = await userRepository.GetByEmailAsync(email, cancellationToken);
             if (existingUser != null)
             {
-                throw new Exception("User already exists");
-            }
-            var user = new User
+                throw new UserAlreadyExistsException(email);
+			}
+			var user = new User
             {
                 Email = email,
                 Role = UserRole.User,
@@ -37,14 +38,14 @@ namespace MiniEcommerce.BusinessLogicLayer.Services
             var existingUser = await userRepository.GetByEmailAsync(email, cancellationToken);
             if (existingUser == null)
             {
-                throw new Exception("User exception");
-            }
-            var result = passwordHasher.VerifyHashedPassword(existingUser, existingUser.PasswordHash, password);
+				throw new InvalidCredentialsException();
+			}
+			var result = passwordHasher.VerifyHashedPassword(existingUser, existingUser.PasswordHash, password);
             if (result != PasswordVerificationResult.Success)
             {
-                throw new Exception("Invalid credentials");
-            }
-            return existingUser;
+				throw new InvalidCredentialsException();
+			}
+			return existingUser;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace MiniEcommerce.DataAccessLayer.Repositories
 	{
         public UserRepository(MiniEcommerceDbContext dbcontext): base(dbcontext){}
        
-        public Task<User> GetByEmailAsync(string email, CancellationToken cancellationToken)
+        public Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken)
         {
             return DbSet.FirstOrDefaultAsync(e=>e.Email == email, cancellationToken);
             

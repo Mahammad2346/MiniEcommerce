@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MiniEcommerce.BusinessLogicLayer.Dtos;
 using MiniEcommerce.BusinessLogicLayer.Interfaces;
 
@@ -24,18 +25,22 @@ public class CategoryController(ICategoryService categoryService) : ControllerBa
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<CategoryDto> CreateCategory([FromBody] CreateCategoryDto dto, CancellationToken cancellationToken = default)
     {
         return await categoryService.CreateCategoryAsync(dto, cancellationToken);
     }
 
     [HttpPut("{categoryId:int}")]
+    [Authorize]
     public async Task<CategoryDto> UpdateCategory([FromRoute] int categoryId, [FromBody] UpdateCategoryDto dto, CancellationToken cancellationToken)
     {
        return await categoryService.UpdateCategoryAsync(categoryId, dto, cancellationToken);
     }
 
     [HttpDelete("{categoryId:int}")]
+    [Authorize]
+
     public async Task<CategoryDto> DeleteCategory([FromRoute] int categoryId, CancellationToken cancellationToken)
     {
         return await categoryService.DeleteCategoryAsync(categoryId, cancellationToken);

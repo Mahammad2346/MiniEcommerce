@@ -13,14 +13,14 @@ namespace MiniEcommerce.Controllers
 
         public async Task<IActionResult> Register([FromBody] RegisterRequest request, CancellationToken cancellationToken)
         {
-            await authService.RegisterAsync(request.Email, request.Password, cancellationToken);
+            await authService.RegisterAsync(request, cancellationToken);
             return Ok();
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest, CancellationToken cancellationToken)
         {
-            var user = await authService.LoginAsync(loginRequest.Email, loginRequest.Password, cancellationToken);
+            var user = await authService.LoginAsync(loginRequest, cancellationToken);
             var token = jwtTokenService.GenerateToken(user);
             return Ok(new LoginResponse(token));
         }

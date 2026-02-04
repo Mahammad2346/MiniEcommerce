@@ -9,5 +9,6 @@ public interface IUnitOfWork
 {   
     IProductRepository Products { get; }
     IRepository<Category> Categories { get; }
+    IRepository<User> Users { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using MiniEcommerce.BusinessLogicLayer.Dtos.Auth;
 using MiniEcommerce.BusinessLogicLayer.Exceptions.User;
 using MiniEcommerce.Contracts.Entities;
 using MiniEcommerce.Contracts.Enums;
@@ -12,20 +13,20 @@ namespace MiniEcommerce.BusinessLogicLayer.Services
 {
     public class AuthService(IUnitOfWork unitOfWork, IUserRepository userRepository, IPasswordHasher<User> passwordHasher)
     {
-        public async Task<User> RegisterAsync(string email, string password, CancellationToken cancellationToken)
+        public async Task<User> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken)
         {
-            var existingUser = await userRepository.GetByEmailAsync(email, cancellationToken);
+            var existingUser = await userRepository.GetByEmailAsync(request.Email, cancellationToken);
             if (existingUser != null)
             {
-                throw new UserAlreadyExistsException(email);
+                throw new UserAlreadyExistsException(request.Email);
 			}
 			var user = new User
             {
-                Email = email,
+                Email = request.Email,
                 Role = UserRole.User,
                 CreatedAt = DateTime.UtcNow,
             };
-            var hashedPassword = passwordHasher.HashPassword(user, password);
+            var hashedPassword = passwordHasher.HashPassword(user, request.Password);
             user.PasswordHash = hashedPassword;
             userRepository.Add(user);
             await unitOfWork.SaveChangesAsync(cancellationToken);
@@ -33,14 +34,14 @@ namespace MiniEcommerce.BusinessLogicLayer.Services
             return user;
         }
 
-        public async Task<User> LoginAsync(string email, string password, CancellationToken cancellationToken)
+        public async Task<User> LoginAsync(LoginRequest request, CancellationToken cancellationToken)
         {
-            var existingUser = await userRepository.GetByEmailAsync(email, cancellationToken);
+            var existingUser = await userRepository.GetByEmailAsync(request.Email, cancellationToken);
             if (existingUser == null)
             {
 				throw new InvalidCredentialsException();
 			}
-			var result = passwordHasher.VerifyHashedPassword(existingUser, existingUser.PasswordHash, password);
+			var result = passwordHasher.VerifyHashedPassword(existingUser, existingUser.PasswordHash, request.Password);
             if (result != PasswordVerificationResult.Success)
             {
 				throw new InvalidCredentialsException();

@@ -8,7 +8,7 @@ on:
     branches:
       - master
     types: [opened, synchronize, reopened]
-  workflow_dispatch: # Manuel çalıştırma butonunu ekledik
+  workflow_dispatch:
 
 jobs:
   build:
@@ -52,14 +52,19 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          # Secrets uyarısını çözmek için $env: kullanıyoruz
           ${{ runner.temp }}\scanner\dotnet-sonarscanner begin `
             /k:"Mahammad2346_MiniEcommerce" `
             /o:"mahammad2346" `
             /d:sonar.token="$env:SONAR_TOKEN" `
-            /d:sonar.host.url="https://sonarcloud.io"
+            /d:sonar.host.url="https://sonarcloud.io" `
+            /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
 
-          dotnet build
-          dotnet test --collect:"XPlat Code Coverage"
-          
-          ${{ runner.temp }}\scanner\dotnet-sonarscanner end /d:sonar.token="$env:SONAR_TOKEN"
+          dotnet build --configuration Release
+
+          dotnet test --configuration Release `
+            --no-build `
+            /p:CollectCoverage=true `
+            /p:CoverletOutputFormat=opencover
+
+          ${{ runner.temp }}\scanner\dotnet-sonarscanner end `
+            /d:sonar.token="$env:SONAR_TOKEN"

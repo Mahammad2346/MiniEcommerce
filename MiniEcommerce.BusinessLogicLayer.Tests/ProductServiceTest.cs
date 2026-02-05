@@ -65,13 +65,27 @@ namespace MiniEcommerce.BusinessLogicLayer.Tests
         [Fact]
         public async Task UpdateProduct_Valid_ShouldUpdateProduct()
         {
-            var product = Fixture.Build<Product>().With(c => c.Name, "Electronics").Create();
-			CategoryRepository.AnyAsync(Arg.Any<Expression<Func<Category, bool>>>(), Arg.Any<CancellationToken>()).Returns(true);
+			var product = new Product
+			{
+				Id = 1,
+				Name = "Electronics",
+				Price = 100,
+				CategoryId = 1
+			};
+			var category = new Category
+			{
+				Id = 1,
+				Name = "Test Category"
+			};
+			CategoryRepository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Category, bool>>>(), Arg.Any<CancellationToken>()).Returns(category);
+			CategoryRepository.AnyAsync(Arg.Any<Expression<Func<Category, bool>>>(), Arg.Any<CancellationToken>()).Returns(false);
 			ProductRepository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Product, bool>>>(), Arg.Any<CancellationToken>()).Returns(product);
+
+			ProductRepository.AnyAsync(Arg.Any<Expression<Func<Product, bool>>>(), Arg.Any<CancellationToken>()).Returns(false);
 			UnitOfWork.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(1);
 
 			var service = CreateService();
-			var dto = Fixture.Build<UpdateProductDto>().With(c=>c.Name, "Books").Create();
+			var dto = Fixture.Build<UpdateProductDto>().With(c=>c.Name, "Books").With(c=>c.CategoryId, 1).Create();
 
             var result = await service.UpdateProductAsync(1, dto, CancellationToken.None);  
 
@@ -96,7 +110,13 @@ namespace MiniEcommerce.BusinessLogicLayer.Tests
 
         public async Task DeleteProduct_Valid_ShouldDeleteProduct()
         {
-            var product = Fixture.Build<Product>().With(c => c.Name, "Electronics").Create();
+			var product = new Product
+			{
+				Id = 1,
+				Name = "Electronics",
+				Price = 100,
+				CategoryId = 1
+			};
 
 			CategoryRepository.AnyAsync(Arg.Any<Expression<Func<Category, bool>>>(), Arg.Any<CancellationToken>()).Returns(true);
 			ProductRepository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Product, bool>>>(), Arg.Any<CancellationToken>()).Returns(product);

@@ -70,7 +70,11 @@ public class CategoryServiceTests : CategoryServiceTestBase
 	public async Task DeleteCategory_HasProducts_ShouldThrowException()
 	{
 		var productRepository = Fixture.Create<IProductRepository>();
-		var category = Fixture.Create<Category>();
+		var category = new Category
+		{
+			Id = 1,
+			Name = "Electronics"
+		};
 		UnitOfWork.Products.Returns(productRepository);
 		productRepository.AnyAsync(Arg.Any<Expression<Func<Product, bool>>>(), Arg.Any<CancellationToken>()).Returns(true);
 		CategoryRepository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Category, bool>>>(), Arg.Any<CancellationToken>()).Returns(category);
@@ -84,7 +88,11 @@ public class CategoryServiceTests : CategoryServiceTestBase
 	{
 
 		var productRepository = Fixture.Create<IProductRepository>();
-		var category = Fixture.Build<Category>().With(c => c.Name, "Electronics").Create();
+		var category = new Category
+		{
+			Id = 1,
+			Name = "Electronics"
+		};
 
 		UnitOfWork.Products.Returns(productRepository);
 		productRepository.AnyAsync(Arg.Any<Expression<Func<Product, bool>>>(), Arg.Any<CancellationToken>()).Returns(false);
@@ -105,7 +113,11 @@ public class CategoryServiceTests : CategoryServiceTestBase
 	public async Task UpdateCategory_DuplicateName_ShouldThrowException()
 	{
 
-		var existingCategory = Fixture.Build<Category>().With(c => c.Name, "Electronics").Create();
+		var existingCategory = new Category
+		{
+			Id = 1,
+			Name = "Electronics"
+		};
 		CategoryRepository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Category, bool>>>(), Arg.Any<CancellationToken>()).Returns(existingCategory);
 		CategoryRepository.AnyAsync(Arg.Any<Expression<Func<Category, bool>>>(), Arg.Any<CancellationToken>()).Returns(true);
 		var categoryService = CreateService();
@@ -117,7 +129,11 @@ public class CategoryServiceTests : CategoryServiceTestBase
 	[Fact]
 	public async Task UpdateCategory_Valid_ShouldUpdateCategory()
 	{
-		var existingCategory = Fixture.Build<Category>().With(c => c.Name, "Electronics").Create();
+		var existingCategory = new Category
+		{
+			Id = 1,
+			Name = "Electronics"
+		};
 		CategoryRepository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Category, bool>>>(), Arg.Any<CancellationToken>()).Returns(existingCategory);
 		CategoryRepository.AnyAsync(Arg.Any<Expression<Func<Category, bool>>>(), Arg.Any<CancellationToken>()).Returns(false);
 		var categoryService = CreateService();

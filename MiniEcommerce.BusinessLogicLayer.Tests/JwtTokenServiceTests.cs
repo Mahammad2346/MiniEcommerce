@@ -10,6 +10,7 @@ namespace MiniEcommerce.BusinessLogicLayer.Tests
 {
     public class JwtTokenServiceTests
     {
+        [Fact]
         public void GenerateToken_ValidUser_ShouldReturnToken()
         {
             var inMemorySettings = new Dictionary<string, string>

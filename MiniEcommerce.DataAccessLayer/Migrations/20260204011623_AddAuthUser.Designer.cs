@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MiniEcommerce.DataAccessLayer.Context;
 
@@ -11,9 +12,11 @@ using MiniEcommerce.DataAccessLayer.Context;
 namespace MiniEcommerce.DataAccessLayer.Migrations
 {
     [DbContext(typeof(MiniEcommerceDbContext))]
-    partial class MiniEcommerceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260204011623_AddAuthUser")]
+    partial class AddAuthUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

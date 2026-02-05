@@ -8,5 +8,5 @@ namespace MiniEcommerce.BusinessLogicLayer.Exceptions.Category;
 
 public sealed class CategoryAlreadyExistsException : AppException
 {
-    public CategoryAlreadyExistsException(string name) : base($"Category with name '{name}' already exists.", HttpStatusCode.Conflict);
+    public CategoryAlreadyExistsException(string name) : base($"Category with name '{name}' already exists.", HttpStatusCode.Conflict) { }
 }

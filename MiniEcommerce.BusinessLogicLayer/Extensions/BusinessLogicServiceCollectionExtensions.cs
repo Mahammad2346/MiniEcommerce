@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MiniEcommerce.BusinessLogicLayer.Interfaces;
 using MiniEcommerce.BusinessLogicLayer.Services;
+using MiniEcommerce.Contracts.Entities;
 using MiniEcommerce.DataAccessLayer.Extensions;
 
 namespace MiniEcommerce.BusinessLogicLayer.Extensions;
@@ -17,7 +19,10 @@ public static class BusinessLogicServiceCollectionExtensions
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<ICategoryService, CategoryService>();
 
-        services.AddMapping();
+		services.AddScoped<AuthService>();
+		services.AddScoped<JwtTokenService>();
+		services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+		services.AddMapping();
 
         return services;
     }

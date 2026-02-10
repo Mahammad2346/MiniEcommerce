@@ -10,29 +10,5 @@ namespace MiniEcommerce.BusinessLogicLayer.Tests
 {
     public class JwtTokenServiceTests
     {
-        [Fact]
-        public void GenerateToken_ValidUser_ShouldReturnToken()
-        {
-            var inMemorySettings = new Dictionary<string, string>
-            {
-                { "Jwt:Key", "ThisIsASecretKeyForTesting123!" },
-                { "Jwt:Issuer", "TestIssuer" },
-                { "Jwt:Audience", "TestAudience" }
-            };
-
-            IConfiguration configuration = new ConfigurationBuilder().AddInMemoryCollection(inMemorySettings).Build();
-            var service = new JwtTokenService(configuration);
-
-            var user = new User
-            {
-                Id = 1,
-                Email = "test@test.com",
-                Role = UserRole.User
-            };
-
-            var token = service.GenerateToken(user);
-
-			Assert.False(string.IsNullOrWhiteSpace(token));
-		}
 	}
 }

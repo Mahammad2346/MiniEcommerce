@@ -1,81 +1,74 @@
 ﻿using AutoFixture;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using MiniEcommerce.BusinessLogicLayer.Dtos.Auth;
+using MiniEcommerce.BusinessLogicLayer.Exceptions.Category;
 using MiniEcommerce.BusinessLogicLayer.Exceptions.User;
+using MiniEcommerce.BusinessLogicLayer.Interfaces;
+using MiniEcommerce.BusinessLogicLayer.Services;
 using MiniEcommerce.Contracts.Entities;
+using MiniEcommerce.Contracts.Interfaces;
+using Moq;
 using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Security.Authentication;
-using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 namespace MiniEcommerce.BusinessLogicLayer.Tests
 {
-    public class AuthServiceTest: AuthServiceTestBase
-    {
-        [Fact]
+	public class AuthServiceTest: AuthServiceTestBase
+	{
+
+		[Fact]
 		public async Task Register_Valid_ShouldCreateUser()
-        {
-			UserRepository.GetByEmailAsync(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(c => Task.FromResult<User?>(null));
-			PasswordHasher.HashPassword(Arg.Any<User>(), Arg.Any<string>()).Returns("hashed-password");
-			UnitOfWork.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(1);
+		{
+			var user = Fixture.Create<RegisterRequest>();
+			UserManager.FindByEmailAsync(user.Email).Returns(Task.FromResult<User?>(null));
+
+			UserManager.CreateAsync(Arg.Any<User>(), user.Password).Returns(Task.FromResult(IdentityResult.Success));
 
 			var service = CreateService();
 
-			var dto = Fixture.Build<RegisterRequest>().With(x => x.Email, "test@gmail.com").With(x => x.Password, "12345").Create();	
-			var result = await service.RegisterAsync(dto, CancellationToken.None);
+			var result = await service.RegisterAsync(user);
 
 			Assert.NotNull(result);
-			Assert.Equal(dto.Email, result.Email);
+			Assert.Equal(user.Email, result.Email);
+			await UserManager.Received(1).CreateAsync(Arg.Any<User>(), user.Password);
 
-			UserRepository.Received(1).Add(Arg.Any<User>());
-			await UnitOfWork.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>());
 		}
 
 		[Fact]
-		public async Task Login_UserNotFound_ShouldThrowException()
+		public async Task Login_InvalidPassword_ShouldThrowException()
 		{
-			UserRepository.GetByEmailAsync(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(c=> Task.FromResult<User?>(null));
+			var request = Fixture.Build<LoginRequest>().With(m => m.Email, "test@gmail.com").With(p => p.Password, "Test123!").Create();
+			var existingUser = Fixture.Build<User>().With(u => u.Email, request.Email).Create();
+			UserManager.FindByEmailAsync(request.Email).Returns(existingUser);
+
+			UserManager.CheckPasswordAsync(existingUser, request.Password).Returns(false);
 
 			var service = CreateService();
-
-			var request = Fixture.Build<LoginRequest>().With(x => x.Email, "notfound@test.com").With(x => x.Password, "123456").Create();
 
 			await Assert.ThrowsAsync<InvalidCredentialsException>(() => service.LoginAsync(request, CancellationToken.None));
 		}
 
 		[Fact]
-		public async Task Login_WrongPassword_ShouldThrowException()
-		{
-			var user = Fixture.Create<User>();
 
-			UserRepository.GetByEmailAsync(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(x => Task.FromResult<User?>(user));
-			PasswordHasher.VerifyHashedPassword(Arg.Any<User>(), Arg.Any<string>(), Arg.Any<string>()).Returns(PasswordVerificationResult.Failed);
+		public async Task Login_Valid()
+		{
+			var request = Fixture.Build<LoginRequest>().With(m => m.Email, "test@gmail.com").With(p => p.Password, "Test123!").Create();
+			var existingUser = Fixture.Build<User>().With(u => u.Email, request.Email).Create();
+
+			UserManager.FindByEmailAsync(request.Email).Returns(existingUser);
+			UserManager.CheckPasswordAsync(existingUser, request.Password).Returns(true);
 
 			var service = CreateService();
 
-			var request = Fixture.Build<LoginRequest>().With(x => x.Email, "test@test.com").With(x => x.Password, "wrong-password").Create();
-
-			await Assert.ThrowsAsync<InvalidCredentialsException>(() =>service.LoginAsync(request, CancellationToken.None));
-		}
-
-		[Fact]
-		public async Task Login_Valid_ShouldReturnUser()
-		{
-			var user = Fixture.Create<User>();
-
-			UserRepository.GetByEmailAsync(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(x => Task.FromResult<User?>(user));
-			PasswordHasher.VerifyHashedPassword(Arg.Any<User>(), Arg.Any<string>(), Arg.Any<string>()).Returns(PasswordVerificationResult.Success);
-
-			var service = CreateService();
-
-			var request = Fixture.Build<LoginRequest>().With(x => x.Email, "test@test.com").With(x => x.Password, "correct-password").Create();
+			TokenService.Generate(existingUser).Returns("fake-jwt-token");
 
 			var result = await service.LoginAsync(request, CancellationToken.None);
 
 			Assert.NotNull(result);
-			Assert.Equal(user.Id, result.Id);
-			Assert.Equal(user.Email, result.Email);
+			Assert.Equal("fake-jwt-token", result);
+
+			TokenService.Received(1).Generate(existingUser);
 		}
 	}
 }

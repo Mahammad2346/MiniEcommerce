@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Identity;
 using MiniEcommerce.BusinessLogicLayer.Dtos.Auth;
 using MiniEcommerce.BusinessLogicLayer.Exceptions.User;
+using MiniEcommerce.BusinessLogicLayer.Interfaces;
 using MiniEcommerce.Contracts.Entities;
 using MiniEcommerce.Contracts.Enums;
 using MiniEcommerce.Contracts.Interfaces;
@@ -11,42 +13,49 @@ using System.Threading;
 
 namespace MiniEcommerce.BusinessLogicLayer.Services
 {
-    public class AuthService(IUnitOfWork unitOfWork, IUserRepository userRepository, IPasswordHasher<User> passwordHasher)
+    public class AuthService(UserManager<User> userManager, ITokenService tokenService): IAuthService   
     {
-        public async Task<User> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken)
+        public async Task<User> RegisterAsync(RegisterRequest registerRequest)
         {
-            var existingUser = await userRepository.GetByEmailAsync(request.Email, cancellationToken);
-            if (existingUser != null)
-            {
-                throw new UserAlreadyExistsException(request.Email);
+		
+			var existingUser = await userManager.FindByEmailAsync(registerRequest.Email);
+			if (existingUser != null)
+			{
+				throw new UserAlreadyExistsException(registerRequest.Email);
 			}
+
 			var user = new User
-            {
-                Email = request.Email,
-                Role = UserRole.User,
-                CreatedAt = DateTime.UtcNow,
-            };
-            var hashedPassword = passwordHasher.HashPassword(user, request.Password);
-            user.PasswordHash = hashedPassword;
-            userRepository.Add(user);
-            await unitOfWork.SaveChangesAsync(cancellationToken);
+			{
+				Email = registerRequest.Email,
+				UserName = registerRequest.Email,
+				Role = UserRole.User,
+				CreatedAt = DateTime.UtcNow,
+			};
 
-            return user;
-        }
-
-        public async Task<User> LoginAsync(LoginRequest request, CancellationToken cancellationToken)
+			var result = await userManager.CreateAsync(user, registerRequest.Password);
+			if (!result.Succeeded)
+			{
+				var firstError = result.Errors.FirstOrDefault()?.Description ?? "Register failed";
+				throw new Exception(firstError);
+			}
+			return user;
+		}
+        public async Task<string> LoginAsync(LoginRequest loginRequest, CancellationToken cancellationToken)
         {
-            var existingUser = await userRepository.GetByEmailAsync(request.Email, cancellationToken);
-            if (existingUser == null)
-            {
+			var existingUser = await userManager.FindByEmailAsync(loginRequest.Email);
+			if (existingUser == null)
+			{
 				throw new InvalidCredentialsException();
 			}
-			var result = passwordHasher.VerifyHashedPassword(existingUser, existingUser.PasswordHash, request.Password);
-            if (result != PasswordVerificationResult.Success)
-            {
+			bool isPasswordValid = await userManager.CheckPasswordAsync(existingUser, loginRequest.Password);
+
+			if (!isPasswordValid)
+			{
 				throw new InvalidCredentialsException();
 			}
-			return existingUser;
-        }
+			return tokenService.Generate(existingUser);
+		}
+
+     
     }
 }

@@ -1,11 +1,16 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using MiniEcommerce.BusinessLogicLayer.Extensions;
-using MiniEcommerce.ExceptionHandlingMiddleware;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using MiniEcommerce.BusinessLogicLayer.Extensions;
+using MiniEcommerce.BusinessLogicLayer.Interfaces;
+using MiniEcommerce.BusinessLogicLayer.Services;
 using MiniEcommerce.Contracts.Entities;
+using MiniEcommerce.Contracts.Interfaces;
+using MiniEcommerce.DataAccessLayer.Context;
+using MiniEcommerce.DataAccessLayer.Extensions;
+using MiniEcommerce.ExceptionHandlingMiddleware;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +38,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 builder.Services.AddBusinessLogicLayer(builder.Configuration);
+builder.Services.AddDataAccessLayer(builder.Configuration);
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ITokenService, JwtTokenService>();
+builder.Services
+	.AddIdentity<User, IdentityRole<Guid>>()
+	.AddEntityFrameworkStores<MiniEcommerceDbContext>()
+	.AddDefaultTokenProviders();
 
 var app = builder.Build();
 

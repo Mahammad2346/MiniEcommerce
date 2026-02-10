@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using MiniEcommerce.Contracts.Entities;
+using MiniEcommerce.Contracts.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,7 +10,7 @@ using System.Text;
 
 namespace MiniEcommerce.BusinessLogicLayer.Services
 {
-	public class JwtTokenService
+	public class JwtTokenService: ITokenService
 	{
 		private readonly string _secretKey;
 		private readonly string _issuer;
@@ -22,12 +23,13 @@ namespace MiniEcommerce.BusinessLogicLayer.Services
 			_audience = configuration["Jwt:Audience"]!;
 		}
 
-		public string GenerateToken(User user)
+        public string Generate(User user)
 		{
 			var claims = new List<Claim>
 			{
 				new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-				new Claim(JwtRegisteredClaimNames.Email, user.Email),
+				new Claim(JwtRegisteredClaimNames.Email, user.Email!),
+				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
 				new Claim(ClaimTypes.Role, user.Role.ToString()),
 			};
 
@@ -35,9 +37,18 @@ namespace MiniEcommerce.BusinessLogicLayer.Services
 
 			var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-			var token = new JwtSecurityToken(issuer: _issuer, audience: _audience, claims: claims, expires: DateTime.UtcNow.AddMinutes(15), signingCredentials: creds);
+			var tokenDescriptor = new SecurityTokenDescriptor
+			{
+				Subject = new ClaimsIdentity(claims),
+				Expires = DateTime.UtcNow.AddMinutes(60),
+				Issuer = _issuer,
+				Audience = _audience,
+				SigningCredentials = creds
+			};
 
-			return new JwtSecurityTokenHandler().WriteToken(token);
+			var tokenHandler = new JwtSecurityTokenHandler();
+			var token = tokenHandler.CreateToken(tokenDescriptor);	
+			return tokenHandler.WriteToken(token);
 		}
 	}
 }

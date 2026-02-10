@@ -1,16 +1,13 @@
-﻿using MiniEcommerce.Contracts.Enums;
+﻿using Microsoft.AspNetCore.Identity;
+using MiniEcommerce.Contracts.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MiniEcommerce.Contracts.Entities
+namespace MiniEcommerce.Contracts.Entities;
+
+public class User: IdentityUser<Guid>
 {
-    public class User
-    {
-        public int Id { get; set; }
-        public required string Email { get; set; }
-        public string PasswordHash { get; set; } = null!;
-        public UserRole Role { get; set; }
-        public DateTime CreatedAt { get; set; }
-    }
+	public UserRole Role { get; set; }
+	public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

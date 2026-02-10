@@ -11,29 +11,26 @@ using System.Text;
 
 namespace MiniEcommerce.BusinessLogicLayer.Tests
 {
-    public class AuthServiceTestBase
+    public abstract class AuthServiceTestBase
     {
-		protected readonly IFixture Fixture;
-		protected readonly IUnitOfWork UnitOfWork;
-		protected readonly IUserRepository UserRepository;
-		protected readonly IPasswordHasher<User> PasswordHasher;
+        protected readonly IFixture Fixture;
+        protected readonly UserManager<User> UserManager;
+        protected readonly ITokenService TokenService;
 
-		public AuthServiceTestBase()
+        protected AuthServiceTestBase()
         {
+            Fixture = new Fixture();
 
-			Fixture = new Fixture().Customize(new AutoNSubstituteCustomization
-			{
-				ConfigureMembers = true
-			});
+            Fixture.Customize(new AutoNSubstituteCustomization());
+            var store = Fixture.Create<IUserStore<User>>();
 
-			UnitOfWork = Fixture.Create<IUnitOfWork>();
-			UserRepository = Fixture.Create<IUserRepository>();
-			PasswordHasher = Fixture.Create<IPasswordHasher<User>>();
+			UserManager = Substitute.For<UserManager<User>>(store, null, null, null, null, null, null, null, null);
+
+			TokenService = Fixture.Create<ITokenService>();
 		}
-
 		protected AuthService CreateService()
 		{
-			return new AuthService(UnitOfWork, UserRepository, PasswordHasher);
+			return new AuthService(UserManager, TokenService);
 		}
 	}
 }

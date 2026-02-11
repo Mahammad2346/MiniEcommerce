@@ -19,32 +19,25 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services
+	.AddAuthentication(options =>
+	{
+		options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+		options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+	})
 	.AddJwtBearer(options =>
 	{
-		options.TokenValidationParameters = new TokenValidationParameters
-		{
-			ValidateIssuer = true,
-			ValidateAudience = true,
-			ValidateLifetime = true,
-			ValidateIssuerSigningKey = true,
-
-			ValidIssuer = builder.Configuration["Jwt:Issuer"],
-			ValidAudience = builder.Configuration["Jwt:Audience"],
-			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)
-			)
-		};
+		options.Authority = "https://dev-ax8s6bs03qdw4zy0.us.auth0.com/";
+		options.Audience = "https://miniecommerce-api";
 	});
 
 builder.Services.AddAuthorization();
 builder.Services.AddBusinessLogicLayer(builder.Configuration);
 builder.Services.AddDataAccessLayer(builder.Configuration);
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<ITokenService, JwtTokenService>();
 builder.Services
-	.AddIdentity<User, IdentityRole<Guid>>()
-	.AddEntityFrameworkStores<MiniEcommerceDbContext>()
-	.AddDefaultTokenProviders();
+	.AddIdentityCore<User>()
+	.AddRoles<IdentityRole<Guid>>()
+	.AddEntityFrameworkStores<MiniEcommerceDbContext>();
 
 var app = builder.Build();
 

@@ -10,6 +10,7 @@ using MiniEcommerce.Contracts.Interfaces;
 using MiniEcommerce.DataAccessLayer.Context;
 using MiniEcommerce.DataAccessLayer.Extensions;
 using MiniEcommerce.ExceptionHandlingMiddleware;
+using MiniEcommerce.Extensions;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,19 +20,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
 
-builder.Services
-	.AddAuthentication(options =>
-	{
-		options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-		options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-	})
-	.AddJwtBearer(options =>
-	{
-		options.Authority = "https://dev-ax8s6bs03qdw4zy0.us.auth0.com/";
-		options.Audience = "https://miniecommerce-api";
-	});
+builder.Services.AddAuth0Authentication(builder.Configuration);
 
-builder.Services.AddAuthorization();
 builder.Services.AddBusinessLogicLayer(builder.Configuration);
 builder.Services.AddDataAccessLayer(builder.Configuration);
 builder.Services

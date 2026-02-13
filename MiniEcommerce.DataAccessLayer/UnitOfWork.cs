@@ -16,5 +16,6 @@ public class UnitOfWork(MiniEcommerceDbContext dbContext) : IUnitOfWork
 
     public IProductRepository Products => _products.Value;
     public IRepository<Category> Categories => _categories.Value;
+
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken) => dbContext.SaveChangesAsync(cancellationToken);
 }

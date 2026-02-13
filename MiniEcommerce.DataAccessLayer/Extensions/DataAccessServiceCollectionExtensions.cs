@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MiniEcommerce.Contracts.Interfaces;
 using MiniEcommerce.DataAccessLayer.Context;
+using MiniEcommerce.DataAccessLayer.Repositories;
 
 namespace MiniEcommerce.DataAccessLayer.Extensions;
 

@@ -19,14 +19,9 @@ public static class AuthenticationServiceCollectionExtensions
 				options.Audience = "https://miniecommerce-api";
 			});
 
-		services.AddAuthorization(options =>
-		{
-			options.AddPolicy("read:categories",
-				policy => policy.Requirements.Add(new HasScopeRequirement("read:categories")));
-
-			options.AddPolicy("write:categories",
-				policy => policy.Requirements.Add(new HasScopeRequirement("write:categories")));
-		});
+		services.AddAuthorizationBuilder().AddPolicy("read:categories", policy =>
+		policy.Requirements.Add(new HasScopeRequirement("read:categories"))).AddPolicy("write:categories", policy =>
+		policy.Requirements.Add(new HasScopeRequirement("write:categories")));
 
 		services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 		return services;

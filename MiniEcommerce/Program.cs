@@ -24,10 +24,6 @@ builder.Services.AddAuth0Authentication(builder.Configuration);
 
 builder.Services.AddBusinessLogicLayer(builder.Configuration);
 builder.Services.AddDataAccessLayer(builder.Configuration);
-builder.Services
-	.AddIdentityCore<User>()
-	.AddRoles<IdentityRole<Guid>>()
-	.AddEntityFrameworkStores<MiniEcommerceDbContext>();
 
 var app = builder.Build();
 

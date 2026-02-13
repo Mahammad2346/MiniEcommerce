@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace MiniEcommerce.DataAccessLayer.Context;
 
-public class MiniEcommerceDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
+public class MiniEcommerceDbContext : DbContext
 {
 	public MiniEcommerceDbContext(DbContextOptions<MiniEcommerceDbContext> options): base(options) { }
 	public DbSet<Product> Products { get; set; }
@@ -18,6 +18,5 @@ public class MiniEcommerceDbContext : IdentityDbContext<User, IdentityRole<Guid>
 
         modelBuilder.ApplyConfiguration(new CategoryConfiguration());
         modelBuilder.ApplyConfiguration(new ProductConfiguration());
-        modelBuilder.ApplyConfiguration(new UserConfiguration());
     }
 }

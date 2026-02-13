@@ -18,7 +18,6 @@ public static class DataAccessServiceCollectionExtensions
                 configuration.GetConnectionString("DefaultConnection")
             ));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<IUserRepository, UserRepository>();
         return services;
     }
 }

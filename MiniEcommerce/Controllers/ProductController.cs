@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MiniEcommerce.BusinessLogicLayer.Dtos;
 using MiniEcommerce.BusinessLogicLayer.Interfaces;
 
@@ -25,18 +26,21 @@ public class ProductsController(IProductService productService) : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<ProductDto> CreateProduct( [FromBody] CreateProductDto dto,CancellationToken cancellationToken)
     {
         return await productService.CreateProductAsync(dto, cancellationToken);  
     }
 
     [HttpPut("{productId:int}")]
+    [Authorize]
     public async Task<ProductDto> UpdateProduct( [FromRoute] int productId, [FromBody] UpdateProductDto dto, CancellationToken cancellationToken)
     {
         return await productService.UpdateProductAsync(productId, dto, cancellationToken);
     }
 
     [HttpDelete("{productId:int}")]
+    [Authorize]
     public async Task<ProductDto> DeleteProduct([FromRoute] int productId, CancellationToken cancellationToken)
     {
         return await productService.DeleteProductAsync(productId, cancellationToken);

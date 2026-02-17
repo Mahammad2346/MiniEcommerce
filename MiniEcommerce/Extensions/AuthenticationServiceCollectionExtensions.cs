@@ -9,19 +9,18 @@ public static class AuthenticationServiceCollectionExtensions
 	public static IServiceCollection AddAuth0Authentication(this IServiceCollection services, IConfiguration configuration)
 	{
 		services.AddAuthentication(options =>
-			{
-				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-			})
+		{
+			options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+			options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+		})
 			.AddJwtBearer(options =>
 			{
 				options.Authority = "https://dev-ax8s6bs03qdw4zy0.us.auth0.com/";
 				options.Audience = "https://miniecommerce-api";
 			});
 
-		services.AddAuthorizationBuilder().AddPolicy("read:categories", policy =>
-		policy.Requirements.Add(new HasScopeRequirement("read:categories"))).AddPolicy("write:categories", policy =>
-		policy.Requirements.Add(new HasScopeRequirement("write:categories")));
+		services.AddAuthorizationBuilder().AddPolicy(AuthorizationPolicies.ReadCategories, policy => policy.Requirements.Add(new HasScopeRequirement(AuthorizationPolicies.ReadCategories)))
+			    .AddPolicy(AuthorizationPolicies.WriteCategories, policy => policy.Requirements.Add(new HasScopeRequirement(AuthorizationPolicies.WriteCategories)));
 
 		services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 		return services;

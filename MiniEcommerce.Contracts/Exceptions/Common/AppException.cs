@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 
-namespace MiniEcommerce.BusinessLogicLayer.Exceptions.Common;
+namespace MiniEcommerce.Contracts.Exceptions.Common;
 
 public class AppException: Exception
 {

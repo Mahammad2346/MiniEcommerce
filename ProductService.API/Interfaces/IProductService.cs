@@ -1,11 +1,10 @@
-﻿using MiniEcommerce.BusinessLogicLayer.Dtos;
+﻿using MiniEcommerce.Contracts.Dtos;
 using MiniEcommerce.Contracts.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MiniEcommerce.BusinessLogicLayer.Interfaces;
-
+namespace MiniEcommerce.Product.API.Interfaces;
 public interface IProductService
 {
     Task<ProductDto> CreateProductAsync(CreateProductDto dto, CancellationToken cancellationToken);

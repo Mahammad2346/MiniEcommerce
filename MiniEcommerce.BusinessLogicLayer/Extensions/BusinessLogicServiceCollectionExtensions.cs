@@ -15,8 +15,7 @@ public static class BusinessLogicServiceCollectionExtensions
         IConfiguration configuration)
     {
         services.AddDataAccessLayer(configuration);
-
-        services.AddScoped<IProductService, ProductService>();
+            
         services.AddScoped<ICategoryService, CategoryService>();
 		services.AddMapping();
 

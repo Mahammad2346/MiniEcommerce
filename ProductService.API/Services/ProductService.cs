@@ -1,14 +1,12 @@
 ﻿using Mapster;
-using Microsoft.EntityFrameworkCore;
-using MiniEcommerce.BusinessLogicLayer.Dtos;
-using MiniEcommerce.BusinessLogicLayer.Exceptions.Category;
-using MiniEcommerce.BusinessLogicLayer.Exceptions.Common;
-using MiniEcommerce.BusinessLogicLayer.Exceptions.Product;
-using MiniEcommerce.BusinessLogicLayer.Interfaces;
-using MiniEcommerce.Contracts.Entities;
+using MiniEcommerce.Contracts.Dtos;
 using MiniEcommerce.Contracts.Interfaces;
-
-namespace MiniEcommerce.BusinessLogicLayer.Services;
+using MiniEcommerce.Product.API.Exceptions.Product;
+using MiniEcommerce.Contracts.Exceptions.Common;
+using ProductEntity = MiniEcommerce.Contracts.Entities.Product;
+using MiniEcommerce.Product.API.Interfaces;
+using MiniEcommerce.BusinessLogicLayer.Exceptions.Category;
+namespace MiniEcommerce.Product.API.Services;
 
 public class ProductService(IUnitOfWork unitOfWork) : IProductService
 {
@@ -23,7 +21,7 @@ public class ProductService(IUnitOfWork unitOfWork) : IProductService
         if (excludedProductId == null || currentCategoryId != categoryId)
         {
             var categoryExist = await unitOfWork.Categories.AnyAsync(c => c.Id == categoryId, cancellationToken);
-            if(!categoryExist)
+            if (!categoryExist)
                 throw new CategoryNotFoundException(categoryId);
         }
 
@@ -35,7 +33,7 @@ public class ProductService(IUnitOfWork unitOfWork) : IProductService
     public async Task<ProductDto> CreateProductAsync(CreateProductDto dto, CancellationToken cancellationToken)
     {
         await ValidateProductAsync(dto.Name, dto.Price, dto.CategoryId, null, null, cancellationToken);
-        var product = dto.Adapt<Product>();
+        var product = dto.Adapt<ProductEntity>();
         unitOfWork.Products.Add(product);
         await unitOfWork.SaveChangesAsync(cancellationToken);
         return product.Adapt<ProductDto>();

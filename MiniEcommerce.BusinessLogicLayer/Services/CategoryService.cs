@@ -1,5 +1,5 @@
 ﻿using Mapster;
-using MiniEcommerce.BusinessLogicLayer.Dtos;
+using MiniEcommerce.Contracts.Dtos;
 using MiniEcommerce.BusinessLogicLayer.Exceptions.Category;
 using MiniEcommerce.BusinessLogicLayer.Interfaces;
 using MiniEcommerce.Contracts.Entities;

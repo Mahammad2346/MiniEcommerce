@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MiniEcommerce.BusinessLogicLayer\MiniEcommerce.BusinessLogicLayer.csproj" />
     <ProjectReference Include="..\MiniEcommerce.Contracts\MiniEcommerce.Contracts.csproj" />
+    <ProjectReference Include="..\ProductService.API\MiniEcommerce.Product.API.csproj" />
   </ItemGroup>
 
   <ItemGroup>

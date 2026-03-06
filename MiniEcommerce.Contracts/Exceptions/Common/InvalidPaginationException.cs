@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace MiniEcommerce.BusinessLogicLayer.Exceptions.Common;
+namespace MiniEcommerce.Contracts.Exceptions.Common;
 
 public sealed class InvalidPaginationException : AppException
 {

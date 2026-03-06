@@ -1,10 +1,11 @@
 ﻿using AutoFixture;
-using MiniEcommerce.BusinessLogicLayer.Dtos;
+using MiniEcommerce.Contracts.Dtos;
 using MiniEcommerce.BusinessLogicLayer.Exceptions.Category;
 using MiniEcommerce.BusinessLogicLayer.Services;
 using MiniEcommerce.Contracts.Entities;
 using MiniEcommerce.Contracts.Interfaces;
 using NSubstitute;
+using ProductEntity = MiniEcommerce.Contracts.Entities.Product;
 using System.Linq.Expressions;
 
 namespace MiniEcommerce.BusinessLogicLayer.Tests;
@@ -76,7 +77,7 @@ public class CategoryServiceTests : CategoryServiceTestBase
 			Name = "Electronics"
 		};
 		UnitOfWork.Products.Returns(productRepository);
-		productRepository.AnyAsync(Arg.Any<Expression<Func<Product, bool>>>(), Arg.Any<CancellationToken>()).Returns(true);
+		productRepository.AnyAsync(Arg.Any<Expression<Func<ProductEntity, bool>>>(), Arg.Any<CancellationToken>()).Returns(true);
 		CategoryRepository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Category, bool>>>(), Arg.Any<CancellationToken>()).Returns(category);
 		var categoryService = CreateService();
 
@@ -95,7 +96,7 @@ public class CategoryServiceTests : CategoryServiceTestBase
 		};
 
 		UnitOfWork.Products.Returns(productRepository);
-		productRepository.AnyAsync(Arg.Any<Expression<Func<Product, bool>>>(), Arg.Any<CancellationToken>()).Returns(false);
+		productRepository.AnyAsync(Arg.Any<Expression<Func<ProductEntity, bool>>>(), Arg.Any<CancellationToken>()).Returns(false);
 		CategoryRepository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Category, bool>>>(), Arg.Any<CancellationToken>()).Returns(category);
 
 		var categoryService = CreateService();

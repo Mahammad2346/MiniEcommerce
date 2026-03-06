@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MiniEcommerce.BusinessLogicLayer.Interfaces;
 using MiniEcommerce.BusinessLogicLayer.Services;
-using MiniEcommerce.Contracts.Entities;
 using MiniEcommerce.DataAccessLayer.Extensions;
 
 namespace MiniEcommerce.BusinessLogicLayer.Extensions;
@@ -15,8 +14,7 @@ public static class BusinessLogicServiceCollectionExtensions
         IConfiguration configuration)
     {
         services.AddDataAccessLayer(configuration);
-
-        services.AddScoped<IProductService, ProductService>();
+            
         services.AddScoped<ICategoryService, CategoryService>();
 		services.AddMapping();
 

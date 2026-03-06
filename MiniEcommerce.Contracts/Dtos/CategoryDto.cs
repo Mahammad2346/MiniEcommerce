@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MiniEcommerce.BusinessLogicLayer.Dtos;
+namespace MiniEcommerce.Contracts.Dtos;
 
-public record CreateCategoryDto
-(
+public record CategoryDto
+(   
+    int Id,
     string Name
 );

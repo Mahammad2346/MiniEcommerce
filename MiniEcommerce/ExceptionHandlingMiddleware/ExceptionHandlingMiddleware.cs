@@ -1,4 +1,4 @@
-﻿using MiniEcommerce.BusinessLogicLayer.Exceptions.Common;
+﻿using MiniEcommerce.Contracts.Exceptions.Common;
 using System.Net;
 using System.Text.Json;
 

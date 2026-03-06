@@ -1,4 +1,4 @@
-﻿using MiniEcommerce.BusinessLogicLayer.Dtos;
+﻿using MiniEcommerce.Contracts.Dtos;
 using MiniEcommerce.Contracts.Entities;
 using System;
 using System.Collections.Generic;

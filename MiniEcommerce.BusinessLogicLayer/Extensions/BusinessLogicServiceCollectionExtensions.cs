@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MiniEcommerce.BusinessLogicLayer.Interfaces;
 using MiniEcommerce.BusinessLogicLayer.Services;
+using MiniEcommerce.Contracts.Entities;
 using MiniEcommerce.DataAccessLayer.Extensions;
 
 namespace MiniEcommerce.BusinessLogicLayer.Extensions;

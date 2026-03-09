@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MiniEcommerce.Contracts.Dtos;
-using MiniEcommerce.Product.API;
+using MiniEcommerce.Contracts.Grpc;
 
 namespace MiniEcommerce.Services;
 

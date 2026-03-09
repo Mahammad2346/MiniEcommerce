@@ -3,7 +3,6 @@
   <Project Path="MiniEcommerce.BusinessLogicLayer/MiniEcommerce.BusinessLogicLayer.csproj" />
   <Project Path="MiniEcommerce.Contracts/MiniEcommerce.Contracts.csproj" Id="a32e6dcc-02a0-4241-aeba-08331eecc295" />
   <Project Path="MiniEcommerce.DataAccessLayer/MiniEcommerce.DataAccessLayer.csproj" />
-  <Project Path="MiniEcommerce.GrpcContracts/MiniEcommerce.GrpcContracts.csproj" Id="3877e535-361b-4399-a83c-7e4086c7503b" />
   <Project Path="MiniEcommerce/MiniEcommerce.csproj" />
   <Project Path="ProductService.API/MiniEcommerce.Product.API.csproj" Id="30d094a4-658e-4e65-b378-ade403d59f5f" />
 </Solution>

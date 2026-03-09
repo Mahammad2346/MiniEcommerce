@@ -58,11 +58,8 @@ namespace MiniEcommerce.BusinessLogicLayer.Tests
         [Fact]
         public async Task UpdateProduct_Valid_ShouldUpdateProduct()
         {
-<<<<<<< feature/product-service-grpc
 			var product = new ProductEntity
-=======
-			var product = new Product
->>>>>>> master
+
 			{
 				Id = 1,
 				Name = "Electronics",
@@ -76,15 +73,10 @@ namespace MiniEcommerce.BusinessLogicLayer.Tests
 			};
 			CategoryRepository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Category, bool>>>(), Arg.Any<CancellationToken>()).Returns(category);
 			CategoryRepository.AnyAsync(Arg.Any<Expression<Func<Category, bool>>>(), Arg.Any<CancellationToken>()).Returns(false);
-<<<<<<< feature/product-service-grpc
 			ProductRepository.FirstOrDefaultAsync(Arg.Any<Expression<Func<ProductEntity, bool>>>(), Arg.Any<CancellationToken>()).Returns(product);
 
 			ProductRepository.AnyAsync(Arg.Any<Expression<Func<ProductEntity, bool>>>(), Arg.Any<CancellationToken>()).Returns(false);
-=======
-			ProductRepository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Product, bool>>>(), Arg.Any<CancellationToken>()).Returns(product);
 
-			ProductRepository.AnyAsync(Arg.Any<Expression<Func<Product, bool>>>(), Arg.Any<CancellationToken>()).Returns(false);
->>>>>>> master
 			UnitOfWork.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(1);
 
 			var service = CreateService();
@@ -113,11 +105,8 @@ namespace MiniEcommerce.BusinessLogicLayer.Tests
 
         public async Task DeleteProduct_Valid_ShouldDeleteProduct()
         {
-<<<<<<< feature/product-service-grpc
 			var product = new ProductEntity
-=======
-			var product = new Product
->>>>>>> master
+
 			{
 				Id = 1,
 				Name = "Electronics",

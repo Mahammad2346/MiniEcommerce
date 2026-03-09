@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "MiniEcommerce.Product.API";
+option csharp_namespace = "MiniEcommerce.Contracts.Grpc";
 
 service ProductGrpc {
   rpc GetProduct (GetProductRequest) returns (GetProductResponse);

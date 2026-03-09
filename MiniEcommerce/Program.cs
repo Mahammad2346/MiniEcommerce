@@ -1,9 +1,9 @@
 using Microsoft.Extensions.Options;
 using MiniEcommerce.BusinessLogicLayer.Extensions;
 using MiniEcommerce.Configurations;
+using MiniEcommerce.Contracts.Grpc;
 using MiniEcommerce.ExceptionHandlingMiddleware;
 using MiniEcommerce.Extensions;
-using MiniEcommerce.Product.API;
 using MiniEcommerce.Services;
 
 var builder = WebApplication.CreateBuilder(args);

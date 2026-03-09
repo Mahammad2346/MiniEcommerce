@@ -1,9 +1,8 @@
 ﻿using Grpc.Core;
 using MiniEcommerce.Contracts.Dtos;
-using MiniEcommerce.Product.API;
-
+using MiniEcommerce.Contracts.Grpc;
 namespace MiniEcommerce.Product.API.Services.Grpc;
-
+using GrpcProduct = MiniEcommerce.Contracts.Grpc.Product;
 public class ProductGrpcService(ProductService productService) : ProductGrpc.ProductGrpcBase
 {
 	public override async Task<GetProductResponse> GetProduct(GetProductRequest request, ServerCallContext context)
@@ -12,7 +11,7 @@ public class ProductGrpcService(ProductService productService) : ProductGrpc.Pro
 
 		return new GetProductResponse
 		{
-			Product = new Product
+			Product = new GrpcProduct
 			{
 				Id = product.Id,
 				Name = product.Name,
@@ -33,7 +32,7 @@ public class ProductGrpcService(ProductService productService) : ProductGrpc.Pro
 
 		var response = new GetProductsResponse();
 
-		response.Products.AddRange(products.Select(p => new Product
+		response.Products.AddRange(products.Select(p => new GrpcProduct
 		{
 			Id = p.Id,
 			Name = p.Name,
@@ -58,7 +57,7 @@ public class ProductGrpcService(ProductService productService) : ProductGrpc.Pro
 
 		return new CreateProductResponse
 		{
-			Product = new Product
+			Product = new GrpcProduct
 			{
 				Id = product.Id,
 				Name = product.Name,
@@ -84,7 +83,7 @@ public class ProductGrpcService(ProductService productService) : ProductGrpc.Pro
 
 		return new UpdateProductResponse
 		{
-			Product = new Product
+			Product = new GrpcProduct
 			{
 				Id = product.Id,
 				Name = product.Name,

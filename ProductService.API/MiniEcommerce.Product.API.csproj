@@ -18,11 +18,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\MiniEcommerce.DataAccessLayer\MiniEcommerce.DataAccessLayer.csproj" />
 		<ProjectReference Include="..\MiniEcommerce.BusinessLogicLayer\MiniEcommerce.BusinessLogicLayer.csproj" />
-		<ProjectReference Include="..\MiniEcommerce.GrpcContracts\MiniEcommerce.GrpcContracts.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Protobuf Include="..\MiniEcommerce.GrpcContracts\Protos\product.proto" GrpcServices="Server" />
+		<ProjectReference Include="..\MiniEcommerce.Contracts\MiniEcommerce.Contracts.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

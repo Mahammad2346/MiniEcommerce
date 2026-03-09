@@ -1,18 +1,11 @@
 ﻿using AutoFixture;
-using MiniEcommerce.BusinessLogicLayer.Dtos;
+using MiniEcommerce.Contracts.Dtos;
 using MiniEcommerce.BusinessLogicLayer.Exceptions.Category;
-using MiniEcommerce.BusinessLogicLayer.Exceptions.Product;
-using MiniEcommerce.BusinessLogicLayer.Interfaces;
-using MiniEcommerce.BusinessLogicLayer.Services;
 using MiniEcommerce.Contracts.Entities;
-using MiniEcommerce.Contracts.Interfaces;
-using MiniEcommerce.DataAccessLayer;
 using NSubstitute;
-using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
-
+using ProductEntity = MiniEcommerce.Contracts.Entities.Product;
+using MiniEcommerce.Product.API.Exceptions.Product;
 namespace MiniEcommerce.BusinessLogicLayer.Tests
 {
     public class ProductServiceTest: ProductServiceTestBase
@@ -22,7 +15,7 @@ namespace MiniEcommerce.BusinessLogicLayer.Tests
         public async Task CreateProduct_Valid_ShouldCreateProduct()
         {
             CategoryRepository.AnyAsync(Arg.Any<Expression<Func<Category, bool>>>(), Arg.Any<CancellationToken>()).Returns(true);
-            ProductRepository.AnyAsync(Arg.Any<Expression<Func<Product, bool>>>(), Arg.Any<CancellationToken>()).Returns(false);
+            ProductRepository.AnyAsync(Arg.Any<Expression<Func<ProductEntity, bool>>>(), Arg.Any<CancellationToken>()).Returns(false);
 
 			UnitOfWork.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(1);
 
@@ -33,7 +26,7 @@ namespace MiniEcommerce.BusinessLogicLayer.Tests
 
             Assert.NotNull(result);
 
-            ProductRepository.Received(1).Add(Arg.Any<Product>());
+            ProductRepository.Received(1).Add(Arg.Any<ProductEntity>());
 
             await UnitOfWork.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>());
 		}
@@ -43,7 +36,7 @@ namespace MiniEcommerce.BusinessLogicLayer.Tests
         public async Task CreateProduct_DuplicateName_ShouldThrowException()
         {
             CategoryRepository.AnyAsync(Arg.Any<Expression<Func<Category, bool>>>(), Arg.Any<CancellationToken>()).Returns(true);
-            ProductRepository.AnyAsync(Arg.Any<Expression<Func<Product, bool>>>(), Arg.Any<CancellationToken>()).Returns(true);
+            ProductRepository.AnyAsync(Arg.Any<Expression<Func<ProductEntity, bool>>>(), Arg.Any<CancellationToken>()).Returns(true);
 
             var service = CreateService();
 			var dto = Fixture.Build<CreateProductDto>().With(x => x.Name, "Electronics").Create();
@@ -65,7 +58,8 @@ namespace MiniEcommerce.BusinessLogicLayer.Tests
         [Fact]
         public async Task UpdateProduct_Valid_ShouldUpdateProduct()
         {
-			var product = new Product
+			var product = new ProductEntity
+
 			{
 				Id = 1,
 				Name = "Electronics",
@@ -79,9 +73,10 @@ namespace MiniEcommerce.BusinessLogicLayer.Tests
 			};
 			CategoryRepository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Category, bool>>>(), Arg.Any<CancellationToken>()).Returns(category);
 			CategoryRepository.AnyAsync(Arg.Any<Expression<Func<Category, bool>>>(), Arg.Any<CancellationToken>()).Returns(false);
-			ProductRepository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Product, bool>>>(), Arg.Any<CancellationToken>()).Returns(product);
+			ProductRepository.FirstOrDefaultAsync(Arg.Any<Expression<Func<ProductEntity, bool>>>(), Arg.Any<CancellationToken>()).Returns(product);
 
-			ProductRepository.AnyAsync(Arg.Any<Expression<Func<Product, bool>>>(), Arg.Any<CancellationToken>()).Returns(false);
+			ProductRepository.AnyAsync(Arg.Any<Expression<Func<ProductEntity, bool>>>(), Arg.Any<CancellationToken>()).Returns(false);
+
 			UnitOfWork.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(1);
 
 			var service = CreateService();
@@ -98,7 +93,7 @@ namespace MiniEcommerce.BusinessLogicLayer.Tests
         public async Task UpdateProduct_ProductNotFound_ShouldThrowException()
         {
 			CategoryRepository.AnyAsync(Arg.Any<Expression<Func<Category, bool>>>(), Arg.Any<CancellationToken>()).Returns(true);
-            ProductRepository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Product, bool>>>(), Arg.Any<CancellationToken>()).Returns((Product?) null);
+            ProductRepository.FirstOrDefaultAsync(Arg.Any<Expression<Func<ProductEntity, bool>>>(), Arg.Any<CancellationToken>()).Returns((ProductEntity?) null);
 
             var service = CreateService();
             var dto = Fixture.Create<UpdateProductDto>();
@@ -110,7 +105,8 @@ namespace MiniEcommerce.BusinessLogicLayer.Tests
 
         public async Task DeleteProduct_Valid_ShouldDeleteProduct()
         {
-			var product = new Product
+			var product = new ProductEntity
+
 			{
 				Id = 1,
 				Name = "Electronics",
@@ -119,7 +115,7 @@ namespace MiniEcommerce.BusinessLogicLayer.Tests
 			};
 
 			CategoryRepository.AnyAsync(Arg.Any<Expression<Func<Category, bool>>>(), Arg.Any<CancellationToken>()).Returns(true);
-			ProductRepository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Product, bool>>>(), Arg.Any<CancellationToken>()).Returns(product);
+			ProductRepository.FirstOrDefaultAsync(Arg.Any<Expression<Func<ProductEntity, bool>>>(), Arg.Any<CancellationToken>()).Returns(product);
 			UnitOfWork.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(1);
 			var service = CreateService();
             var result = await service.DeleteProductAsync(1, CancellationToken.None);
@@ -134,7 +130,7 @@ namespace MiniEcommerce.BusinessLogicLayer.Tests
 
         public async Task DeleteProduct_ProductNotFound_ShouldThrowException()
         {
-			ProductRepository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Product, bool>>>(), Arg.Any<CancellationToken>()).Returns((Product?)null);
+			ProductRepository.FirstOrDefaultAsync(Arg.Any<Expression<Func<ProductEntity, bool>>>(), Arg.Any<CancellationToken>()).Returns((ProductEntity?)null);
 
             var service = CreateService();
 

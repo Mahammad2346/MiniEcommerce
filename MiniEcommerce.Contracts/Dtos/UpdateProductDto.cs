@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MiniEcommerce.BusinessLogicLayer.Dtos;
+namespace MiniEcommerce.Contracts.Dtos;
 
-public record ProductDto
-(
-    int Id,
+public record UpdateProductDto
+(   
     string Name,
     decimal Price,
     string Description,

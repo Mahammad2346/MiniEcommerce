@@ -1,12 +1,9 @@
 ﻿using AutoFixture;
 using AutoFixture.AutoNSubstitute;
-using MiniEcommerce.BusinessLogicLayer.Services;
 using MiniEcommerce.Contracts.Entities;
 using MiniEcommerce.Contracts.Interfaces;
+using MiniEcommerce.Product.API.Services;
 using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MiniEcommerce.BusinessLogicLayer.Tests
 {

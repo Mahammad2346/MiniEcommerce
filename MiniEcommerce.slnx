@@ -4,4 +4,5 @@
   <Project Path="MiniEcommerce.Contracts/MiniEcommerce.Contracts.csproj" Id="a32e6dcc-02a0-4241-aeba-08331eecc295" />
   <Project Path="MiniEcommerce.DataAccessLayer/MiniEcommerce.DataAccessLayer.csproj" />
   <Project Path="MiniEcommerce/MiniEcommerce.csproj" />
+  <Project Path="ProductService.API/MiniEcommerce.Product.API.csproj" Id="30d094a4-658e-4e65-b378-ade403d59f5f" />
 </Solution>

@@ -1,15 +1,15 @@
 using MiniEcommerce.DataAccessLayer.Extensions;
-using MiniEcommerce.Product.API.Services;
+using MiniEcommerce.Product.API;
 using MiniEcommerce.Product.API.Services.Grpc;
+using MiniEcommerce.Product.BusinessLogicLayer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddGrpc();
 
-builder.Services.AddScoped<ProductService>();
-
 builder.Services.AddDataAccessLayer(builder.Configuration);
-
+builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<CategoryService>();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 

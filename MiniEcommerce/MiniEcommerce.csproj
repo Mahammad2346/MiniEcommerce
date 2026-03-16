@@ -10,9 +10,13 @@
 	<ItemGroup>
 		<PackageReference Include="Grpc.AspNetCore" Version="2.76.0" />
 		<PackageReference Include="Grpc.Net.Client" Version="2.76.0" />
+		<PackageReference Include="Grpc.Tools" Version="2.78.0">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.2" />
-		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.1">
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.2">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
@@ -26,6 +30,7 @@
 		<ProjectReference Include="..\MiniEcommerce.BusinessLogicLayer\MiniEcommerce.BusinessLogicLayer.csproj" />
 		<ProjectReference Include="..\MiniEcommerce.DataAccessLayer\MiniEcommerce.DataAccessLayer.csproj" />
 		<ProjectReference Include="..\MiniEcommerce.Contracts\MiniEcommerce.Contracts.csproj" />
+		<ProjectReference Include="..\Services\ProductService\MiniEcommerce.Product.Contracts\MiniEcommerce.Product.Contracts.csproj" />
 	</ItemGroup>
 
 </Project>

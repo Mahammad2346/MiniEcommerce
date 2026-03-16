@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MiniEcommerce.Contracts.Dtos;
-using MiniEcommerce.Contracts.Grpc;
+using Microsoft.Identity.Client;
+using MiniEcommerce.Product.Contracts;
+using MiniEcommerce.Product.Contracts.Protos;
 
 namespace MiniEcommerce.Services;
 
-public class ProductGateway
-{
+public class ProductGateway{
 	private readonly ProductGrpc.ProductGrpcClient grpcClient;
 
 	public ProductGateway(ProductGrpc.ProductGrpcClient grpcClient)
@@ -13,6 +13,84 @@ public class ProductGateway
 		this.grpcClient = grpcClient;
 	}
 
+
+	public async Task<CategoryDto> CreateCategory(CreateCategoryDto dto, CancellationToken cancellationToken)
+	{
+		var request = new CreateCategoryRequest
+		{
+			Name = dto.Name
+		};
+
+		var response = await grpcClient.CreateCategoryAsync(request, cancellationToken: cancellationToken);
+
+		var categoryDto = new CategoryDto(
+			Id: response.Category.Id,
+			Name: response.Category.Name
+		);
+
+		return categoryDto;
+	}
+	public async Task<IReadOnlyList<CategoryDto>> GetCategories(int pageNumber, int pageSize, CancellationToken cancellationToken)
+	{
+		var request = new GetCategoriesRequest
+		{
+			PageNumber = pageNumber,
+			PageSize = pageSize
+		};
+
+		var response = await grpcClient.GetCategoriesAsync(request, cancellationToken: cancellationToken);
+
+		var categories = response.Categories
+			.Select(c => new CategoryDto(
+				Id: c.Id,
+				Name: c.Name
+			))
+			.ToList();
+
+		return categories;
+	}
+
+	public async Task<CategoryDto> GetCategoryById(int categoryId, CancellationToken cancellationToken)
+	{
+		var request = new GetCategoryRequest
+		{
+			Id = categoryId
+		};
+
+		var response = await grpcClient.GetCategoryAsync(request, cancellationToken: cancellationToken);
+
+		return new CategoryDto(
+			Id: response.Category.Id,
+			Name: response.Category.Name
+		);
+	}
+
+	public async Task<CategoryDto> UpdateCategory(int categoryId, UpdateCategoryDto dto, CancellationToken cancellation)
+	{
+		var request = new UpdateCategoryRequest
+		{
+			Id = categoryId,
+			Name = dto.Name,
+		};
+
+		var response = await grpcClient.UpdateCategoryAsync(request, cancellationToken: cancellation);
+
+		var categoryDto = new CategoryDto(Id: response.Category.Id, Name: response.Category.Name);
+
+		return categoryDto; 
+ 
+	}
+	public async Task<bool> DeleteCategory(int categoryId, CancellationToken cancellationToken)
+	{
+		var request = new DeleteCategoryRequest
+		{
+			Id = categoryId
+		};
+
+		var response = await grpcClient.DeleteCategoryAsync(request, cancellationToken: cancellationToken);
+
+		return response.Success;
+	}
 	public async Task<IReadOnlyList<ProductDto>> GetProductsAsync(int pageNumber, int pageSize, int? categoryId, CancellationToken cancellationToken)
 	{
 		var request = new GetProductsRequest
@@ -29,7 +107,7 @@ public class ProductGateway
 			Name: p.Name,
 			Price: (decimal)p.Price,
 			Description: p.Description,
-			CategoryId: p.CategoryId
+			CategoryId: p.CategoryId	
 		)).ToList();
 
 		return productDtos;

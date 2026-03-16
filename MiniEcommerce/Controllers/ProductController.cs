@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MiniEcommerce.Contracts.Dtos;
+using MiniEcommerce.Product.Contracts;
 using MiniEcommerce.Services;
 namespace MiniEcommerce.Api.Controllers;
 

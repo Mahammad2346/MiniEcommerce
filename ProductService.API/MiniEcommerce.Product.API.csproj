@@ -12,17 +12,22 @@
 		<PackageReference Include="Grpc.AspNetCore" Version="2.76.0" />
 		<PackageReference Include="Mapster" Version="7.4.0" />
 		<PackageReference Include="Mapster.DependencyInjection" Version="1.0.1" />
-		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3" />
-	</ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.2" />
 
-	<ItemGroup>
-		<ProjectReference Include="..\MiniEcommerce.DataAccessLayer\MiniEcommerce.DataAccessLayer.csproj" />
-		<ProjectReference Include="..\MiniEcommerce.BusinessLogicLayer\MiniEcommerce.BusinessLogicLayer.csproj" />
-		<ProjectReference Include="..\MiniEcommerce.Contracts\MiniEcommerce.Contracts.csproj" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.2">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>
 		<Folder Include="Controllers\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\Services\ProductService\MiniEcommerce.Product.BusinessLogicLayer\MiniEcommerce.Product.BusinessLogicLayer.csproj" />
+	  <ProjectReference Include="..\Services\ProductService\MiniEcommerce.Product.DataAccessLayer\MiniEcommerce.Product.DataAccessLayer.csproj" />
+	</ItemGroup>
 </Project>

@@ -1,24 +1,59 @@
 ﻿using Grpc.Core;
-using MiniEcommerce.Contracts.Dtos;
-using MiniEcommerce.Contracts.Grpc;
-namespace MiniEcommerce.Product.API.Services.Grpc;
-using GrpcProduct = MiniEcommerce.Contracts.Grpc.Product;
-public class ProductGrpcService(ProductService productService) : ProductGrpc.ProductGrpcBase
+using MiniEcommerce.Product.BusinessLogicLayer.Services;
+using MiniEcommerce.Product.Contracts.Protos;
+using MiniEcommerce.Product.Contracts;
+using MiniEcommerce.Product.BusinessLogicLayer.Entities;
+using GrpcCategory = MiniEcommerce.Product.Contracts.Protos.Category;
+using GrpcProduct = MiniEcommerce.Product.Contracts.Protos.Product;
+using Mapster;
+namespace MiniEcommerce.Product.API.Services.Grpc;	
+
+
+
+public class ProductGrpcService(ProductService productService, CategoryService categoryService) : ProductGrpc.ProductGrpcBase
 {
+	public override async Task<CreateCategoryResponse> CreateCategory(CreateCategoryRequest request, ServerCallContext context)
+	{
+		var category = await categoryService.CreateCategoryAsync(
+			new CreateCategoryDto(request.Name),
+			context.CancellationToken
+		);
+
+		return new CreateCategoryResponse
+		{
+			Category = category.Adapt<GrpcCategory>()
+		};
+	}
+	public override async Task<GetCategoryResponse> GetCategory(GetCategoryRequest request, ServerCallContext context)
+	{
+		var category = await categoryService.GetCategoryByIdAsync(request.Id, context.CancellationToken);
+
+		return new GetCategoryResponse
+		{
+			Category = category.Adapt<GrpcCategory>()
+		};
+	}
+
+	public override async Task<GetCategoriesResponse> GetCategories(GetCategoriesRequest request, ServerCallContext context)
+	{
+		var category = await categoryService.GetAllCategoriesAsync(
+				request.PageNumber,
+				request.PageSize,
+				context.CancellationToken
+			);
+		var response = new GetCategoriesResponse();
+
+		response.Categories.AddRange(category.Adapt<IEnumerable<GrpcCategory>>());
+
+		return response;
+	}
 	public override async Task<GetProductResponse> GetProduct(GetProductRequest request, ServerCallContext context)
 	{
 		var product = await productService.GetProduct(request.Id, context.CancellationToken);
 
 		return new GetProductResponse
 		{
-			Product = new GrpcProduct
-			{
-				Id = product.Id,
-				Name = product.Name,
-				Price = (double)product.Price,
-				Description = product.Description,
-				CategoryId = product.CategoryId,
-			}
+			Product = product.Adapt<GrpcProduct>()
 		};
 	}
 	public override async Task<GetProductsResponse> GetProducts(GetProductsRequest request, ServerCallContext context)
@@ -32,14 +67,7 @@ public class ProductGrpcService(ProductService productService) : ProductGrpc.Pro
 
 		var response = new GetProductsResponse();
 
-		response.Products.AddRange(products.Select(p => new GrpcProduct
-		{
-			Id = p.Id,
-			Name = p.Name,
-			Price = (double)p.Price,
-			Description = p.Description,
-			CategoryId = p.CategoryId
-		}));
+		response.Products.AddRange(products.Adapt<IEnumerable<GrpcProduct>>());
 
 		return response;
 	}
@@ -57,14 +85,7 @@ public class ProductGrpcService(ProductService productService) : ProductGrpc.Pro
 
 		return new CreateProductResponse
 		{
-			Product = new GrpcProduct
-			{
-				Id = product.Id,
-				Name = product.Name,
-				Price = (double)product.Price,
-				CategoryId = product.CategoryId,
-				Description = product.Description
-			}
+			Product = product.Adapt<GrpcProduct>()
 		};
 	}
 
@@ -83,14 +104,7 @@ public class ProductGrpcService(ProductService productService) : ProductGrpc.Pro
 
 		return new UpdateProductResponse
 		{
-			Product = new GrpcProduct
-			{
-				Id = product.Id,
-				Name = product.Name,
-				Price = (double)product.Price,
-				Description = product.Description,
-				CategoryId = product.CategoryId
-			}
+			Product = product.Adapt<GrpcProduct>()	
 		};
 	}
 

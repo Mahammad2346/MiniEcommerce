@@ -1,8 +1,8 @@
 ﻿using AutoFixture;
 using AutoFixture.AutoNSubstitute;
-using MiniEcommerce.Contracts.Entities;
-using MiniEcommerce.Contracts.Interfaces;
-using MiniEcommerce.Product.API.Services;
+using MiniEcommerce.Product.API.Interfaces;
+using MiniEcommerce.Product.API.Repositories;
+using MiniEcommerce.Product.BusinessLogicLayer.Services;
 using NSubstitute;
 
 namespace MiniEcommerce.BusinessLogicLayer.Tests
@@ -12,7 +12,7 @@ namespace MiniEcommerce.BusinessLogicLayer.Tests
         protected readonly IFixture Fixture;
         protected readonly IUnitOfWork UnitOfWork;
         protected readonly IProductRepository ProductRepository;
-		protected readonly IRepository<Category> CategoryRepository;
+		protected readonly ICategoryRepository CategoryRepository;
 
 		protected ProductServiceTestBase()
         {
@@ -23,7 +23,7 @@ namespace MiniEcommerce.BusinessLogicLayer.Tests
 
             UnitOfWork = Fixture.Create<IUnitOfWork>();
             ProductRepository = Fixture.Create<IProductRepository>();
-			CategoryRepository = Fixture.Create<IRepository<Category>>();
+			CategoryRepository = Fixture.Create<ICategoryRepository>();
 			UnitOfWork.Categories.Returns(CategoryRepository);
 
 			UnitOfWork.Products.Returns(ProductRepository);

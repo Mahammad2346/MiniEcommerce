@@ -1,11 +1,11 @@
 ﻿using AutoFixture;
-using MiniEcommerce.Contracts.Dtos;
-using MiniEcommerce.BusinessLogicLayer.Exceptions.Category;
-using MiniEcommerce.Contracts.Entities;
 using NSubstitute;
 using System.Linq.Expressions;
-using ProductEntity = MiniEcommerce.Contracts.Entities.Product;
+using ProductEntity = MiniEcommerce.Product.BusinessLogicLayer.Entities.Product;
 using MiniEcommerce.Product.API.Exceptions.Product;
+using MiniEcommerce.Product.API.Exceptions;
+using MiniEcommerce.Product.BusinessLogicLayer.Entities;
+using MiniEcommerce.Product.Contracts;
 namespace MiniEcommerce.BusinessLogicLayer.Tests
 {
     public class ProductServiceTest: ProductServiceTestBase

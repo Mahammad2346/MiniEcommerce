@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11505.172
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniEcommerce.Product.API", "..\..\..\ProductService.API\MiniEcommerce.Product.API.csproj", "{C80E1391-3921-3746-4EA8-6E982F68DF19}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniEcommerce.Product.DataAccessLayer", "..\MiniEcommerce.Product.DataAccessLayer\MiniEcommerce.Product.DataAccessLayer.csproj", "{6DF1EFC8-F7E2-CE73-23A2-94B31F4D82AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniEcommerce.Product.Contracts", "..\MiniEcommerce.Product.Contracts\MiniEcommerce.Product.Contracts.csproj", "{A3CF6E89-3838-870C-594A-411B59A879C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniEcommerce.Product.BusinessLogicLayer", "..\MiniEcommerce.Product.BusinessLogicLayer\MiniEcommerce.Product.BusinessLogicLayer.csproj", "{68C8AFE8-9FF0-0B14-AAF8-2E33D532122D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniEcommerce.BusinessLogicLayer.Tests", "..\..\..\MiniEcommerce.BusinessLogicLayer.Tests\MiniEcommerce.BusinessLogicLayer.Tests.csproj", "{7BF1F605-7CA1-E9BE-610A-5D236B594479}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C80E1391-3921-3746-4EA8-6E982F68DF19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C80E1391-3921-3746-4EA8-6E982F68DF19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C80E1391-3921-3746-4EA8-6E982F68DF19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C80E1391-3921-3746-4EA8-6E982F68DF19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DF1EFC8-F7E2-CE73-23A2-94B31F4D82AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DF1EFC8-F7E2-CE73-23A2-94B31F4D82AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DF1EFC8-F7E2-CE73-23A2-94B31F4D82AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DF1EFC8-F7E2-CE73-23A2-94B31F4D82AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3CF6E89-3838-870C-594A-411B59A879C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3CF6E89-3838-870C-594A-411B59A879C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3CF6E89-3838-870C-594A-411B59A879C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3CF6E89-3838-870C-594A-411B59A879C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68C8AFE8-9FF0-0B14-AAF8-2E33D532122D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68C8AFE8-9FF0-0B14-AAF8-2E33D532122D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68C8AFE8-9FF0-0B14-AAF8-2E33D532122D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68C8AFE8-9FF0-0B14-AAF8-2E33D532122D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BF1F605-7CA1-E9BE-610A-5D236B594479}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BF1F605-7CA1-E9BE-610A-5D236B594479}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BF1F605-7CA1-E9BE-610A-5D236B594479}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BF1F605-7CA1-E9BE-610A-5D236B594479}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FF1091A5-0B65-4CFD-9A08-3F4E5A9ADD6C}
+	EndGlobalSection
+EndGlobal

@@ -21,7 +21,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Protobuf Include="Protos\product.proto" GrpcServices="Both" />
+	  <Folder Include="Dtos\" />
+	  <Folder Include="Entities\" />
+	  <Folder Include="Interfaces\" />
 	</ItemGroup>
 
 </Project>

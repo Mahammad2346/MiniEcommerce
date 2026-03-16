@@ -61,9 +61,15 @@ jobs:
             /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" `
             /d:sonar.coverage.exclusions="**/Controllers/**,**/Program.cs,**/Migrations/**,**/*Exception.cs,**/*Extensions.cs,**/*Configuration.cs"
 
-          dotnet build --configuration Release
+          dotnet build MiniEcommerce.sln --configuration Release
+          dotnet build MiniEcommerce.Product.sln --configuration Release
 
-          dotnet test --configuration Release `
+          dotnet test MiniEcommerce.sln --configuration Release `
+            --no-build `
+            --collect:"XPlat Code Coverage" `
+            -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+
+          dotnet test MiniEcommerce.Product.sln --configuration Release `
             --no-build `
             --collect:"XPlat Code Coverage" `
             -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover

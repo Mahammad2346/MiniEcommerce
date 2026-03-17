@@ -24,4 +24,4 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapGrpcService<ProductGrpcService>();
 
-app.Run();
+await app.RunAsync();

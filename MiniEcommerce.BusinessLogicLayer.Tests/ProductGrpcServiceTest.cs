@@ -179,4 +179,74 @@ public class ProductGrpcServiceTest
 
 		await productServiceMock.Received(1).UpdateProductAsync(Arg.Any<int>(), Arg.Any<UpdateProductDto>(), Arg.Any<CancellationToken>());
 	}
+
+	[Fact]
+	public async Task CreateCategory_ShouldReturnCreatedCategory()
+	{
+		var fakeCategory = Fixture.Create<CategoryDto>();
+
+		categoryServiceMock.CreateCategoryAsync(Arg.Any<CreateCategoryDto>(), Arg.Any<CancellationToken>()).Returns(fakeCategory);
+
+		var request = new CreateCategoryRequest
+		{
+			Name = fakeCategory.Name
+		};
+
+		var mockContext = Substitute.For<ServerCallContext>();
+
+		var result = await sut.CreateCategory(request, mockContext);
+
+		Assert.NotNull(result);
+		Assert.NotNull(result.Category);
+		Assert.Equal(fakeCategory.Name, result.Category.Name);
+
+		await categoryServiceMock.Received(1).CreateCategoryAsync(Arg.Any<CreateCategoryDto>(), Arg.Any<CancellationToken>());
+	}
+
+	[Fact]
+	public async Task GetCategory_WhenCategoryExists_ShouldReturnCategory()
+	{
+		var categoryId = 1;
+		var fakeCategory = Fixture.Create<CategoryDto>();
+
+		categoryServiceMock.GetCategoryByIdAsync(categoryId, Arg.Any<CancellationToken>()).Returns(fakeCategory);
+
+		var request = new GetCategoryRequest
+		{
+			Id = categoryId
+		};
+
+		var mockContext = Substitute.For<ServerCallContext>();
+
+		var result = await sut.GetCategory(request, mockContext);
+
+		Assert.NotNull(result);
+		Assert.NotNull(result.Category);
+		Assert.Equal(fakeCategory.Id, result.Category.Id);
+		Assert.Equal(fakeCategory.Name, result.Category.Name);
+
+		await categoryServiceMock.Received(1).GetCategoryByIdAsync(categoryId, Arg.Any<CancellationToken>());
+	}
+	[Fact]
+	public async Task GetCategories_ShouldReturnCategories()
+	{
+		var fakeCategories = Fixture.CreateMany<CategoryDto>(3).ToList();
+
+		categoryServiceMock.GetAllCategoriesAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns(fakeCategories);
+
+		var request = new GetCategoriesRequest
+		{
+			PageNumber = 1,
+			PageSize = 10
+		};
+
+		var mockContext = Substitute.For<ServerCallContext>();
+
+		var result = await sut.GetCategories(request, mockContext);
+
+		Assert.NotNull(result);
+		Assert.Equal(fakeCategories.Count, result.Categories.Count);
+
+		await categoryServiceMock.Received(1).GetAllCategoriesAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<CancellationToken>());
+	}
 }

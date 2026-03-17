@@ -13,7 +13,7 @@ public class ProductRepository(MiniEcommerceDbContext dbContext): Repository<Pro
 		int? categoryId,
 		CancellationToken cancellationToken)
 	{
-		IQueryable<ProductEntity> productQuery = dbContext.Products;
+		IQueryable<ProductEntity> productQuery = DbSet;
 
 		if (categoryId.HasValue)
 			productQuery = productQuery.Where(p => p.CategoryId == categoryId.Value);

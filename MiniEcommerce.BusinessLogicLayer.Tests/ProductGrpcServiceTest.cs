@@ -121,4 +121,62 @@ public class ProductGrpcServiceTest
 
 		await productServiceMock.Received(1).DeleteProductAsync(productId, Arg.Any<CancellationToken>());
 	}
+
+	[Fact]
+	public async Task CreateProduct_ShouldReturnCreatedProduct()
+	{
+		var fakeProduct = Fixture.Create<ProductDto>();
+
+		productServiceMock
+			.CreateProductAsync(Arg.Any<CreateProductDto>(), Arg.Any<CancellationToken>())
+			.Returns(fakeProduct);
+
+		var request = new CreateProductRequest
+		{
+			Name = fakeProduct.Name,
+			Price = (double)fakeProduct.Price,
+			CategoryId = fakeProduct.CategoryId,
+			Description = fakeProduct.Description
+		};
+
+		var mockContext = Substitute.For<ServerCallContext>();
+
+		var result = await sut.CreateProduct(request, mockContext);
+
+		Assert.NotNull(result);
+		Assert.NotNull(result.Product);
+		Assert.Equal(fakeProduct.Name, result.Product.Name);
+
+		await productServiceMock
+			.Received(1)
+			.CreateProductAsync(Arg.Any<CreateProductDto>(), Arg.Any<CancellationToken>());
+	}
+
+	[Fact]
+	public async Task UpdateProduct_ShouldReturnUpdatedProduct()
+	{
+		var fakeProduct = Fixture.Create<ProductDto>();
+
+		productServiceMock.UpdateProductAsync(Arg.Any<int>(), Arg.Any<UpdateProductDto>(), Arg.Any<CancellationToken>()).Returns(fakeProduct);
+
+		var request = new UpdateProductRequest
+		{
+			Id = fakeProduct.Id,
+			Name = fakeProduct.Name,
+			Price = (double)fakeProduct.Price,
+			Description = fakeProduct.Description,
+			CategoryId = fakeProduct.CategoryId
+		};
+
+		var mockContext = Substitute.For<ServerCallContext>();
+
+		var result = await sut.UpdateProduct(request, mockContext);
+
+		Assert.NotNull(result);
+		Assert.NotNull(result.Product);
+		Assert.Equal(fakeProduct.Id, result.Product.Id);
+		Assert.Equal(fakeProduct.Name, result.Product.Name);
+
+		await productServiceMock.Received(1).UpdateProductAsync(Arg.Any<int>(), Arg.Any<UpdateProductDto>(), Arg.Any<CancellationToken>());
+	}
 }

@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniEcommerce.Product.Contr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniEcommerce.Product.BusinessLogicLayer", "..\MiniEcommerce.Product.BusinessLogicLayer\MiniEcommerce.Product.BusinessLogicLayer.csproj", "{68C8AFE8-9FF0-0B14-AAF8-2E33D532122D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniEcommerce.BusinessLogicLayer.Tests", "..\..\..\MiniEcommerce.BusinessLogicLayer.Tests\MiniEcommerce.BusinessLogicLayer.Tests.csproj", "{7BF1F605-7CA1-E9BE-610A-5D236B594479}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniEcommerce.Product.BusinessLogicLayer.Tests", "..\..\..\MiniEcommerce.BusinessLogicLayer.Tests\MiniEcommerce.Product.BusinessLogicLayer.Tests.csproj", "{7BF1F605-7CA1-E9BE-610A-5D236B594479}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -8,8 +8,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddGrpc();
 
 builder.Services.AddDataAccessLayer(builder.Configuration);
-builder.Services.AddScoped<ProductService>();
-builder.Services.AddScoped<CategoryService>();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 

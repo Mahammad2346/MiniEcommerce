@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
-using MiniEcommerce.Product.Contracts;
-using MiniEcommerce.Product.Contracts.Protos;
+using MiniEcommerce.Contracts.Dtos;
+using MiniEcommerce.Contracts.Protos;
 
 namespace MiniEcommerce.Services;
 

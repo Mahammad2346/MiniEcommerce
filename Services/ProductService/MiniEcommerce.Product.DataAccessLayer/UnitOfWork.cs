@@ -1,29 +1,18 @@
 ﻿using MiniEcommerce.Product.API.Interfaces;
 using MiniEcommerce.Product.API.Repositories;
 using MiniEcommerce.Product.DataAccessLayer;
-using MiniEcommerce.Product.DataAccessLayer.Repositories;
 
 namespace MiniEcommerce.Product.API;
 
-public class UnitOfWork : IUnitOfWork
+public class UnitOfWork(
+	MiniEcommerceDbContext dbContext,
+	IProductRepository productRepository,
+	ICategoryRepository categoryRepository) : IUnitOfWork
 {
-	private readonly MiniEcommerceDbContext _dbContext;
+	public IProductRepository Products { get; } = productRepository;
 
-	private readonly Lazy<IProductRepository> _products;
-	private readonly Lazy<ICategoryRepository> _categories;
-
-	public UnitOfWork(MiniEcommerceDbContext dbContext)
-	{
-		_dbContext = dbContext;
-
-		_products = new Lazy<IProductRepository>(() => new ProductRepository(_dbContext));
-		_categories = new Lazy<ICategoryRepository>(() => new CategoryRepository(_dbContext));
-	}
-
-	public IProductRepository Products => _products.Value;
-
-	public ICategoryRepository Categories => _categories.Value;
+	public ICategoryRepository Categories { get; } = categoryRepository;
 
 	public Task<int> SaveChangesAsync(CancellationToken cancellationToken)
-		=> _dbContext.SaveChangesAsync(cancellationToken);
+		=> dbContext.SaveChangesAsync(cancellationToken);
 }

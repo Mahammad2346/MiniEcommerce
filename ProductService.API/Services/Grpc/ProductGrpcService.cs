@@ -6,11 +6,12 @@ using MiniEcommerce.Product.BusinessLogicLayer.Entities;
 using GrpcCategory = MiniEcommerce.Product.Contracts.Protos.Category;
 using GrpcProduct = MiniEcommerce.Product.Contracts.Protos.Product;
 using Mapster;
+using MiniEcommerce.Product.API.Interfaces;
 namespace MiniEcommerce.Product.API.Services.Grpc;	
 
 
 
-public class ProductGrpcService(ProductService productService, CategoryService categoryService) : ProductGrpc.ProductGrpcBase
+public class ProductGrpcService(IProductService productService, ICategoryService categoryService) : ProductGrpc.ProductGrpcBase
 {
 	public override async Task<CreateCategoryResponse> CreateCategory(CreateCategoryRequest request, ServerCallContext context)
 	{
@@ -118,4 +119,3 @@ public class ProductGrpcService(ProductService productService, CategoryService c
 		};
 	}
 }
-

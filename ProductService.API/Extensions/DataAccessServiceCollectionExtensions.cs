@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using MiniEcommerce.Product.API;
 using MiniEcommerce.Product.API.Interfaces;
+using MiniEcommerce.Product.API.Repositories;
+using MiniEcommerce.Product.BusinessLogicLayer.Services;
 using MiniEcommerce.Product.DataAccessLayer;
+using MiniEcommerce.Product.DataAccessLayer.Repositories;
 
 namespace MiniEcommerce.DataAccessLayer.Extensions;
 
@@ -18,6 +19,10 @@ public static class DataAccessServiceCollectionExtensions
                 configuration.GetConnectionString("DefaultConnection")
             ));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IProductRepository, ProductRepository>();
         return services;
     }
 }

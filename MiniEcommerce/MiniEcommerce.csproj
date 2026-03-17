@@ -30,7 +30,6 @@
 		<ProjectReference Include="..\MiniEcommerce.BusinessLogicLayer\MiniEcommerce.BusinessLogicLayer.csproj" />
 		<ProjectReference Include="..\MiniEcommerce.DataAccessLayer\MiniEcommerce.DataAccessLayer.csproj" />
 		<ProjectReference Include="..\MiniEcommerce.Contracts\MiniEcommerce.Contracts.csproj" />
-		<ProjectReference Include="..\Services\ProductService\MiniEcommerce.Product.Contracts\MiniEcommerce.Product.Contracts.csproj" />
 	</ItemGroup>
 
 </Project>

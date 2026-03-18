@@ -8,7 +8,7 @@ namespace MiniEcommerce.BusinessLogicLayer.Tests;
 
 public class RepositoryIntegrationTest
 {
-	private MiniEcommerceDbContext CreateContext()
+	private static MiniEcommerceDbContext CreateContext()
 	{
 		var options = new DbContextOptionsBuilder<MiniEcommerceDbContext>().UseInMemoryDatabase("TestDb").Options;
 

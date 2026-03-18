@@ -170,5 +170,37 @@ namespace MiniEcommerce.BusinessLogicLayer.Tests
 
             await Assert.ThrowsAsync<ProductNotFoundException>(() => service.DeleteProductAsync(1, CancellationToken.None));
 		}
+
+		[Fact]
+		public async Task UpdateProduct_NameEmpty_ShouldThrowException()
+		{
+			var product = new ProductEntity
+			{
+				Id = 1,
+				Name = "Old",
+				Price = 10,
+				CategoryId = 1
+			};
+
+			ProductRepository.FirstOrDefaultAsync(Arg.Any<Expression<Func<ProductEntity, bool>>>(), Arg.Any<CancellationToken>()).Returns(product);
+
+			CategoryRepository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Category, bool>>>(), Arg.Any<CancellationToken>()).Returns(new Category { Id = 1, Name = "Test" });
+
+			var dto = Fixture.Build<UpdateProductDto>().With(x => x.Name, "").Create();
+
+			var service = CreateService();
+
+			await Assert.ThrowsAsync<ProductNameEmptyException>(() => service.UpdateProductAsync(1, dto, CancellationToken.None));
+		}
+
+		[Fact]
+		public async Task CreateProduct_InvalidCategoryId_ShouldThrowException()
+		{
+			var dto = Fixture.Build<CreateProductDto>().With(x => x.CategoryId, 0).Create();
+
+			var service = CreateService();
+
+			await Assert.ThrowsAsync<CategoryNotFoundException>(() => service.CreateProductAsync(dto, CancellationToken.None));
+		}
 	}
 }

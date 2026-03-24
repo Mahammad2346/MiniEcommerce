@@ -1,21 +1,13 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using MiniEcommerce.BusinessLogicLayer.Extensions;
-using MiniEcommerce.BusinessLogicLayer.Interfaces;
-using MiniEcommerce.BusinessLogicLayer.Services;
-using MiniEcommerce.Contracts.Entities;
-using MiniEcommerce.Contracts.Interfaces;
-using MiniEcommerce.DataAccessLayer.Context;
 using MiniEcommerce.DataAccessLayer.Extensions;
 using MiniEcommerce.ExceptionHandlingMiddleware;
 using MiniEcommerce.Extensions;
-using System.Text;
+using MiniEcommerce.GrpcServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddGrpc();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
@@ -24,14 +16,15 @@ builder.Services.AddAuth0Authentication(builder.Configuration);
 
 builder.Services.AddBusinessLogicLayer(builder.Configuration);
 builder.Services.AddDataAccessLayer(builder.Configuration);
-
+builder.Services.AddGrpcReflection();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-    app.MapOpenApi();
+	app.UseSwagger();
+	app.UseSwaggerUI();
+	app.MapOpenApi();
+	app.MapGrpcReflectionService();
 }
 
 app.UseHttpsRedirection();
@@ -40,6 +33,8 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
+app.MapGrpcService<ProductGrpcService>(); 
 
 await app.RunAsync();

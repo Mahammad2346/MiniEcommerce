@@ -1,4 +1,5 @@
 using MiniEcommerce.BusinessLogicLayer.Extensions;
+using MiniEcommerce.Contracts.Protos;
 using MiniEcommerce.DataAccessLayer.Extensions;
 using MiniEcommerce.ExceptionHandlingMiddleware;
 using MiniEcommerce.Extensions;
@@ -17,6 +18,11 @@ builder.Services.AddAuth0Authentication(builder.Configuration);
 builder.Services.AddBusinessLogicLayer(builder.Configuration);
 builder.Services.AddDataAccessLayer(builder.Configuration);
 builder.Services.AddGrpcReflection();
+
+builder.Services.AddGrpcClient<ProductGrpc.ProductGrpcClient>(o =>
+{
+	o.Address = new Uri("https://localhost:7008");
+});
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -25,16 +31,16 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 	app.MapOpenApi();
 	app.MapGrpcReflectionService();
+
+	app.UseHttpsRedirection();
+
+	app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+	app.UseAuthentication();
+	app.UseAuthorization();
+
+	app.MapControllers();
+	app.MapGrpcService<ProductGrpcService>();
+
+	app.Run();
 }
-
-app.UseHttpsRedirection();
-
-app.UseMiddleware<ExceptionHandlingMiddleware>();
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapControllers();
-app.MapGrpcService<ProductGrpcService>(); 
-
-await app.RunAsync();

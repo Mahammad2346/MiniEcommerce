@@ -1,4 +1,5 @@
-﻿using MiniEcommerce.BusinessLogicLayer.Dtos;
+﻿using Mapster;
+using MiniEcommerce.BusinessLogicLayer.Dtos;
 using MiniEcommerce.Contracts.Protos;
 
 namespace MiniEcommerce.Services;
@@ -21,12 +22,8 @@ public class ProductGateway{
 
 		var response = await grpcClient.CreateCategoryAsync(request, cancellationToken: cancellationToken);
 
-		var categoryDto = new CategoryDto(
-			Id: response.Category.Id,
-			Name: response.Category.Name
-		);
+		return response.Category.Adapt<CategoryDto>();
 
-		return categoryDto;
 	}
 	public async Task<IReadOnlyList<CategoryDto>> GetCategories(int pageNumber, int pageSize, CancellationToken cancellationToken)
 	{
@@ -38,14 +35,7 @@ public class ProductGateway{
 
 		var response = await grpcClient.GetCategoriesAsync(request, cancellationToken: cancellationToken);
 
-		var categories = response.Categories
-			.Select(c => new CategoryDto(
-				Id: c.Id,
-				Name: c.Name
-			))
-			.ToList();
-
-		return categories;
+		return response.Categories.Adapt<IReadOnlyList<CategoryDto>>();
 	}
 
 	public async Task<CategoryDto> GetCategoryById(int categoryId, CancellationToken cancellationToken)
@@ -57,10 +47,7 @@ public class ProductGateway{
 
 		var response = await grpcClient.GetCategoryAsync(request, cancellationToken: cancellationToken);
 
-		return new CategoryDto(
-			Id: response.Category.Id,
-			Name: response.Category.Name
-		);
+		return response.Category.Adapt<CategoryDto>();
 	}
 
 	public async Task<CategoryDto> UpdateCategory(int categoryId, UpdateCategoryDto dto, CancellationToken cancellation)
@@ -73,10 +60,8 @@ public class ProductGateway{
 
 		var response = await grpcClient.UpdateCategoryAsync(request, cancellationToken: cancellation);
 
-		var categoryDto = new CategoryDto(Id: response.Category.Id, Name: response.Category.Name);
+		return response.Category.Adapt<CategoryDto>();
 
-		return categoryDto; 
- 
 	}
 	public async Task<bool> DeleteCategory(int categoryId, CancellationToken cancellationToken)
 	{
@@ -100,15 +85,7 @@ public class ProductGateway{
 
 		var response = await grpcClient.GetProductsAsync(request, cancellationToken: cancellationToken);
 
-		var productDtos = response.Products.Select(p => new ProductDto(
-			Id: p.Id,
-			Name: p.Name,
-			Price: (decimal)p.Price,
-			Description: p.Description,
-			CategoryId: p.CategoryId	
-		)).ToList();
-
-		return productDtos;
+		return response.Products.Adapt<IReadOnlyList<ProductDto>>();
 	}
 
 	public async Task<ProductDto> GetProductById(int productId, CancellationToken cancellationToken)
@@ -120,15 +97,7 @@ public class ProductGateway{
 
 		var response = await grpcClient.GetProductAsync(request, cancellationToken: cancellationToken);
 
-		var productDto = new ProductDto(
-			Id: response.Product.Id,
-			Name: response.Product.Name,
-			Price: (decimal)response.Product.Price,
-			Description: response.Product.Description,
-			CategoryId: response.Product.CategoryId
-		);
-
-		return productDto;
+		return response.Product.Adapt<ProductDto>();
 	}
 
 
@@ -144,14 +113,7 @@ public class ProductGateway{
 
 		var response = await grpcClient.CreateProductAsync(request, cancellationToken: cancellationToken);
 
-		var productDto = new ProductDto(
-			response.Product.Id,
-			response.Product.Name,
-			(decimal)response.Product.Price,
-			response.Product.Description,
-			response.Product.CategoryId
-			);
-		return productDto;
+		return response.Product.Adapt<ProductDto>();
 	}
 
 	public async Task<ProductDto> UpdateProduct(int productId, UpdateProductDto dto, CancellationToken cancellationToken)
@@ -167,10 +129,7 @@ public class ProductGateway{
 
 		var response = await grpcClient.UpdateProductAsync(request, cancellationToken: cancellationToken);
 
-		var productDto = new ProductDto(response.Product.Id, response.Product.Name, (decimal)response.Product.Price, response.Product.Description,
-		response.Product.CategoryId);
-
-		return productDto;
+		return response.Product.Adapt<ProductDto>();
 	}
 
 	public async Task<bool> DeleteProduct(int productId, CancellationToken cancellationToken)

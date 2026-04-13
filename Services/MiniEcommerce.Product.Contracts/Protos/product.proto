@@ -1,0 +1,118 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "MiniEcommerce.Product.Contracts.Protos";
+
+service ProductGrpc {
+  rpc GetProduct (GetProductRequest) returns (GetProductResponse);
+  rpc GetProducts (GetProductsRequest) returns (GetProductsResponse);
+  rpc CreateProduct (CreateProductRequest) returns (CreateProductResponse);
+  rpc UpdateProduct (UpdateProductRequest) returns (UpdateProductResponse);
+  rpc DeleteProduct (DeleteProductRequest) returns (DeleteProductResponse);
+  rpc CreateCategory (CreateCategoryRequest) returns (CreateCategoryResponse);
+  rpc GetCategories (GetCategoriesRequest) returns (GetCategoriesResponse);
+  rpc GetCategory (GetCategoryRequest) returns (GetCategoryResponse);
+  rpc UpdateCategory (UpdateCategoryRequest) returns (UpdateCategoryResponse);
+  rpc DeleteCategory (DeleteCategoryRequest) returns (DeleteCategoryResponse);
+}
+
+message Category {
+	int32 id = 1;
+	string name = 2;
+}
+
+message CreateCategoryRequest{
+	string name = 1;
+}
+
+message GetCategoryRequest {
+	int32 id = 1;
+}
+
+message GetCategoryResponse {
+	Category category = 1;
+}
+
+message CreateCategoryResponse {
+  Category category = 1;
+}
+
+message GetCategoriesRequest {
+  int32 pageNumber = 1;
+  int32 pageSize = 2;
+}
+
+message GetCategoriesResponse {
+  repeated Category categories = 1;
+}
+
+message UpdateCategoryRequest {
+	int32 id = 1;
+	string name = 2;
+}
+message UpdateCategoryResponse {
+	Category category = 1;
+}
+
+message DeleteCategoryRequest {
+	int32 id = 1;
+}
+
+message DeleteCategoryResponse {
+	bool success = 1;
+}
+message Product {
+  int32 id = 1;
+  string name = 2;
+  double price = 3;
+  string description = 4;
+  int32 categoryId = 5;
+}
+
+message GetProductRequest {
+  int32 id = 1;
+}
+
+message GetProductResponse {
+  Product product = 1;
+}
+
+message GetProductsRequest {
+  int32 pageNumber = 1;
+  int32 pageSize = 2;
+  int32 categoryId = 3;
+}
+
+message GetProductsResponse {
+  repeated Product products = 1;
+}
+
+message CreateProductRequest {
+  string name = 1;
+  double price = 2;
+  string description = 3;
+  int32 categoryId = 4;
+}
+
+message CreateProductResponse {
+  Product product = 1;
+}
+
+message UpdateProductRequest {
+  int32 id = 1;
+  string name = 2;
+  double price = 3;
+  string description = 4;
+  int32 categoryId = 5;
+}
+
+message UpdateProductResponse {
+  Product product = 1;
+}
+
+message DeleteProductRequest {
+  int32 id = 1;
+}
+
+message DeleteProductResponse {
+  bool success = 1;
+}

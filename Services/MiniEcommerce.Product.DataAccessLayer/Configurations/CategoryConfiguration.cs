@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MiniEcommerce.Product.BusinessLogicLayer.Entities;
-using MiniEcommerce.Product.Contracts;
+using MiniEcommerce.Product.DataAccessLayer.Entities;
 namespace MiniEcommerce.Product.DataAccessLayer.Configurations;
 
 public class CategoryConfiguration : IEntityTypeConfiguration<Category>

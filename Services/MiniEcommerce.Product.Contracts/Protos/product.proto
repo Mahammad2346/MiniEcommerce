@@ -63,7 +63,7 @@ message DeleteCategoryResponse {
 message Product {
   int32 id = 1;
   string name = 2;
-  double price = 3;
+  string price = 3;
   string description = 4;
   int32 categoryId = 5;
 }
@@ -88,7 +88,7 @@ message GetProductsResponse {
 
 message CreateProductRequest {
   string name = 1;
-  double price = 2;
+  string price = 2;
   string description = 3;
   int32 categoryId = 4;
 }
@@ -100,7 +100,7 @@ message CreateProductResponse {
 message UpdateProductRequest {
   int32 id = 1;
   string name = 2;
-  double price = 3;
+  string price = 3;
   string description = 4;
   int32 categoryId = 5;
 }

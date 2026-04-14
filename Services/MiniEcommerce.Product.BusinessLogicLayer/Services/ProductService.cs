@@ -1,10 +1,13 @@
 ﻿using Mapster;
-using MiniEcommerce.Contracts.Exceptions.Common;
-using MiniEcommerce.Product.API.Exceptions;
-using MiniEcommerce.Product.API.Exceptions.Product;
-using MiniEcommerce.Product.API.Interfaces;
+using MiniEcommerce.Product.BusinessLogicLayer.Exceptions;
+using MiniEcommerce.Product.BusinessLogicLayer.Exceptions.Product;
+using MiniEcommerce.Product.BusinessLogicLayer.Interfaces;
 using MiniEcommerce.Product.Contracts;
-using ProductEntity = MiniEcommerce.Product.BusinessLogicLayer.Entities.Product;
+using MiniEcommerce.Product.DataAccessLayer.Interfaces;
+using ProductEntity = MiniEcommerce.Product.DataAccessLayer.Entities.Product;
+
+
+
 namespace MiniEcommerce.Product.BusinessLogicLayer.Services;
 
 public class ProductService(IUnitOfWork unitOfWork) : IProductService

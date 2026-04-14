@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MiniEcommerce.Product.BusinessLogicLayer.Entities;
+namespace MiniEcommerce.Product.DataAccessLayer.Entities;
 
 public class Product
 {

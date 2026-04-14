@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MiniEcommerce.Product.API.Interfaces;
-using MiniEcommerce.Product.BusinessLogicLayer.Entities;
+using MiniEcommerce.Product.DataAccessLayer.Entities;
+using MiniEcommerce.Product.DataAccessLayer.Interfaces;
 
 namespace MiniEcommerce.Product.DataAccessLayer.Repositories;
 

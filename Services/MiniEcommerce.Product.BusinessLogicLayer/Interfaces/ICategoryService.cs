@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MiniEcommerce.Product.API.Interfaces;
+namespace MiniEcommerce.Product.BusinessLogicLayer.Interfaces;
 
 public interface ICategoryService
 {

@@ -1,8 +1,8 @@
-﻿using MiniEcommerce.Product.API.Interfaces;
-using MiniEcommerce.Product.API.Repositories;
-using MiniEcommerce.Product.DataAccessLayer;
+﻿using MiniEcommerce.Product.DataAccessLayer;
+using MiniEcommerce.Product.DataAccessLayer.Interfaces;
+using MiniEcommerce.Product.DataAccessLayer.Repositories;
 
-namespace MiniEcommerce.Product.API;
+namespace MiniEcommerce.Product.DataAccessLayer;
 
 public class UnitOfWork(
 	MiniEcommerceDbContext dbContext,

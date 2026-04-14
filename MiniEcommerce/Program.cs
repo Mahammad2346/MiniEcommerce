@@ -15,7 +15,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddAuth0Authentication(builder.Configuration);
 
 builder.Services.Configure<ProductGrpcOptions>(
-	builder.Configuration.GetSection("ProductGrpc"));
+	builder.Configuration.GetSection(ProductGrpcOptions.SectionName));
 
 builder.Services.AddScoped<ProductGateway>();
 builder.Services.AddGrpcClient<ProductGrpc.ProductGrpcClient>((sp, options) =>
@@ -35,7 +35,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-//app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();

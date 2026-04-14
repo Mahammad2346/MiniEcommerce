@@ -1,7 +1,7 @@
-﻿using MiniEcommerce.Product.BusinessLogicLayer.Entities;
-using MiniEcommerce.Product.BusinessLogicLayer.Interfaces;
+﻿using MiniEcommerce.Product.DataAccessLayer.Entities;
+using MiniEcommerce.Product.DataAccessLayer.Interfaces;
 
-namespace MiniEcommerce.Product.API.Interfaces;
+namespace MiniEcommerce.Product.DataAccessLayer.Interfaces;
 
 public interface ICategoryRepository : IRepository<Category>
 {

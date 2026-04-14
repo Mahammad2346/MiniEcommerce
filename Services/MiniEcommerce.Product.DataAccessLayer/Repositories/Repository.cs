@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MiniEcommerce.Product.BusinessLogicLayer.Interfaces;
+using MiniEcommerce.Product.DataAccessLayer.Interfaces;
 using System.Linq.Expressions;
 
 namespace MiniEcommerce.Product.DataAccessLayer.Repositories;

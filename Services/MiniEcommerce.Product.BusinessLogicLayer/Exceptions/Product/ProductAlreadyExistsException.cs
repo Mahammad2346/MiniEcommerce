@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 
-namespace MiniEcommerce.Product.API.Exceptions.Product;
+namespace MiniEcommerce.Product.BusinessLogicLayer.Exceptions.Product;
 
 public sealed class ProductAlreadyExistsException : AppException
 {

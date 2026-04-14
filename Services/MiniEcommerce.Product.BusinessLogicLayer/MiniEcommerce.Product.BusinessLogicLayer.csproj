@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MiniEcommerce.Product.Contracts\MiniEcommerce.Product.Contracts.csproj" />
+    <ProjectReference Include="..\MiniEcommerce.Product.DataAccessLayer\MiniEcommerce.Product.DataAccessLayer.csproj" />
   </ItemGroup>
 
 </Project>

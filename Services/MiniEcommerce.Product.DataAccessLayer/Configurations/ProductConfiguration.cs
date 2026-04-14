@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ProductEntity = MiniEcommerce.Product.BusinessLogicLayer.Entities.Product;
+using ProductEntity = MiniEcommerce.Product.DataAccessLayer.Entities.Product;
 namespace MiniEcommerce.Product.DataAccessLayer.Configurations;
 
 public class ProductConfiguration : IEntityTypeConfiguration<ProductEntity>

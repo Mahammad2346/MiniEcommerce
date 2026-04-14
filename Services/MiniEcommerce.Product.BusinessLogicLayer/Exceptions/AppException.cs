@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace MiniEcommerce.Product.API.Exceptions;
+namespace MiniEcommerce.Product.BusinessLogicLayer.Exceptions;
 
 public class AppException : Exception
 {

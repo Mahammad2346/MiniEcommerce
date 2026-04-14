@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 
-namespace MiniEcommerce.Product.API.Exceptions;
+namespace MiniEcommerce.Product.BusinessLogicLayer.Exceptions;
 
 public sealed class CategoryNotFoundException : AppException
 {

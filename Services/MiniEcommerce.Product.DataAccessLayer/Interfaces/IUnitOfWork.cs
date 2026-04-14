@@ -1,9 +1,10 @@
-﻿using MiniEcommerce.Product.API.Repositories;
+﻿using MiniEcommerce.Product.DataAccessLayer.Interfaces;
+using MiniEcommerce.Product.DataAccessLayer.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MiniEcommerce.Product.API.Interfaces;
+namespace MiniEcommerce.Product.DataAccessLayer.Interfaces;
 
 public interface IUnitOfWork
 {   

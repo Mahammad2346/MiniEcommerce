@@ -46,13 +46,23 @@ public class CategoryController(ProductGateway productGateway) : ControllerBase
 
 	[HttpDelete("{categoryId:int}")]
 	[Authorize(Policy = AuthorizationPolicies.WriteCategories)]
-	public async Task<IActionResult> DeleteCategory([FromRoute] int categoryId, CancellationToken cancellationToken)
+	public async Task<DeleteResponseDto> DeleteCategory([FromRoute] int categoryId, CancellationToken cancellationToken)
 	{
 		var success = await productGateway.DeleteCategory(categoryId, cancellationToken);
 
 		if (!success)
-			return NotFound();
+		{
+			return new DeleteResponseDto
+			{
+				Success = false,
+				Message = $"Deletion failed. Category with ID {categoryId} not found"
+			};
+		}
 
-		return NoContent();
+		return new DeleteResponseDto
+		{
+			Success = true,
+			Message = "Category deleted successfully"
+		};
 	}
 }

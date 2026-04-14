@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace MiniEcommerce.Product.BusinessLogicLayer.Interfaces
+namespace MiniEcommerce.Product.DataAccessLayer.Interfaces
 {
 	public interface IRepository<T> where T : class
 	{

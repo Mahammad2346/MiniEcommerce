@@ -1,14 +1,17 @@
 ﻿using Mapster;
-using MiniEcommerce.Product.API.Exceptions;
-using MiniEcommerce.Product.API.Interfaces;
-using MiniEcommerce.Product.BusinessLogicLayer.Entities;
+using MiniEcommerce.Product.BusinessLogicLayer.Exceptions;
+using MiniEcommerce.Product.BusinessLogicLayer.Interfaces;
 using MiniEcommerce.Product.Contracts;
+using MiniEcommerce.Product.Contracts.Protos;
+using MiniEcommerce.Product.DataAccessLayer.Interfaces;
+using CategoryEntity = MiniEcommerce.Product.DataAccessLayer.Entities.Category;
+
 
 namespace MiniEcommerce.Product.BusinessLogicLayer.Services;
 
 public class CategoryService(IUnitOfWork unitOfWork) : ICategoryService
 {
-    private async Task<Category> GetCategoryOrThrowAsync(int categoryId, CancellationToken cancellationToken)
+    private async Task<CategoryEntity> GetCategoryOrThrowAsync(int categoryId, CancellationToken cancellationToken)
     {
         var category = await unitOfWork.Categories.FirstOrDefaultAsync(c => c.Id == categoryId, cancellationToken);
         if (category is null)
@@ -24,7 +27,7 @@ public class CategoryService(IUnitOfWork unitOfWork) : ICategoryService
         if (categoryExist)
             throw new CategoryAlreadyExistsException(dto.Name);
 
-        var category = dto.Adapt<Category>();
+        var category = dto.Adapt<CategoryEntity>();
         unitOfWork.Categories.Add(category);
         await unitOfWork.SaveChangesAsync(cancellationToken);
         return category.Adapt<CategoryDto>();

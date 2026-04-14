@@ -1,14 +1,13 @@
-﻿using Grpc.Core;
+﻿using Google.Protobuf;
+using Grpc.Core;
+using Mapster;
+using MiniEcommerce.Product.BusinessLogicLayer.Interfaces;
 using MiniEcommerce.Product.Contracts;
+using MiniEcommerce.Product.Contracts.Protos;
+using System.Globalization;
 using GrpcCategory = MiniEcommerce.Product.Contracts.Protos.Category;
 using GrpcProduct = MiniEcommerce.Product.Contracts.Protos.Product;
-using Mapster;
-using MiniEcommerce.Product.API.Interfaces;
-using MiniEcommerce.Product.Contracts.Protos;
-using Google.Protobuf;
-namespace MiniEcommerce.Product.API.Services.Grpc;	
-
-
+namespace MiniEcommerce.Product.Grpc.Services.Grpc;	
 
 public class ProductGrpcService(IProductService productService, ICategoryService categoryService) : ProductGrpc.ProductGrpcBase
 {
@@ -76,7 +75,7 @@ public class ProductGrpcService(IProductService productService, ICategoryService
 		var product = await productService.CreateProductAsync(
 			new CreateProductDto(
 				request.Name,
-				(decimal)request.Price,
+				decimal.Parse(request.Price, CultureInfo.InvariantCulture),
 				request.CategoryId,
 				request.Description
 			),
@@ -95,7 +94,7 @@ public class ProductGrpcService(IProductService productService, ICategoryService
 			request.Id,
 			new UpdateProductDto(
 				Name: request.Name,
-				Price: (decimal)request.Price,
+				Price: decimal.Parse(request.Price, CultureInfo.InvariantCulture),
 				Description: request.Description,
 				CategoryId: request.CategoryId
 			),

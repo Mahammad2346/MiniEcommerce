@@ -3,7 +3,6 @@ using System.Net;
 using System.Text.Json;
 
 namespace MiniEcommerce.ExceptionHandlingMiddleware;
-
 public class ExceptionHandlingMiddleware(RequestDelegate next)
 {
     public async Task InvokeAsync(HttpContext context)

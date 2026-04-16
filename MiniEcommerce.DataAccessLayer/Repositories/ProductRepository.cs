@@ -3,8 +3,6 @@ using MiniEcommerce.Contracts.Entities;
 using MiniEcommerce.Contracts.Interfaces;
 using MiniEcommerce.DataAccessLayer.Context;
 using MiniEcommerce.DataAccessLayer.Repositories;
-
-
 public class ProductRepository : Repository<Product>, IProductRepository
 {
     public ProductRepository(MiniEcommerceDbContext dbContext) : base(dbContext) { }

@@ -1,6 +1,4 @@
 ﻿namespace MiniEcommerce.Authorization;
-
-
 public class AuthorizationPolicies
 {
 	public const string ReadCategories = "read:categories";

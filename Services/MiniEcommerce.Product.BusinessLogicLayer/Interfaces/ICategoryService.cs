@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace MiniEcommerce.Product.BusinessLogicLayer.Interfaces;
-
 public interface ICategoryService
 {
     Task<IReadOnlyList<CategoryDto>> GetAllCategoriesAsync(int pageNumber, int pageSize, CancellationToken cancellationToken);

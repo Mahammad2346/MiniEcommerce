@@ -6,9 +6,7 @@ using MiniEcommerce.Product.Contracts.Protos;
 using MiniEcommerce.Product.DataAccessLayer.Interfaces;
 using CategoryEntity = MiniEcommerce.Product.DataAccessLayer.Entities.Category;
 
-
 namespace MiniEcommerce.Product.BusinessLogicLayer.Services;
-
 public class CategoryService(IUnitOfWork unitOfWork) : ICategoryService
 {
     private async Task<CategoryEntity> GetCategoryOrThrowAsync(int categoryId, CancellationToken cancellationToken)

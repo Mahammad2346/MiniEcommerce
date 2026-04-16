@@ -4,7 +4,6 @@ using MiniEcommerce.Product.DataAccessLayer.Configurations;
 using ProductEntity = MiniEcommerce.Product.DataAccessLayer.Entities.Product;
 namespace MiniEcommerce.Product.DataAccessLayer;
 
-
 public class MiniEcommerceDbContext : DbContext
 {
 	public MiniEcommerceDbContext(DbContextOptions<MiniEcommerceDbContext> options): base(options) { }

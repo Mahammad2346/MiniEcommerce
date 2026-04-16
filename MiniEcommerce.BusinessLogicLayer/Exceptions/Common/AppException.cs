@@ -4,7 +4,6 @@ using System.Net;
 using System.Text;
 
 namespace MiniEcommerce.BusinessLogicLayer.Exceptions.Common;
-
 public class AppException: Exception
 {
     public HttpStatusCode StatusCode { get; set; }

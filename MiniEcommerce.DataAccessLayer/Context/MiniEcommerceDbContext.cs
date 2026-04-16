@@ -4,9 +4,7 @@ using MiniEcommerce.Contracts.Entities;
 using MiniEcommerce.DataAccessLayer.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-
 namespace MiniEcommerce.DataAccessLayer.Context;
-
 public class MiniEcommerceDbContext : DbContext
 {
 	public MiniEcommerceDbContext(DbContextOptions<MiniEcommerceDbContext> options): base(options) { }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace MiniEcommerce.Product.DataAccessLayer.Entities;
-
 public class Product
 {
     public int Id { get; set; }

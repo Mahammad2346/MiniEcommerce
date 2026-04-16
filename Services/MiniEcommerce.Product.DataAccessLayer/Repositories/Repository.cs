@@ -3,7 +3,6 @@ using MiniEcommerce.Product.DataAccessLayer.Interfaces;
 using System.Linq.Expressions;
 
 namespace MiniEcommerce.Product.DataAccessLayer.Repositories;
-
 public class Repository<T>(MiniEcommerceDbContext dbContext) : IRepository<T>
 	where T : class
 {

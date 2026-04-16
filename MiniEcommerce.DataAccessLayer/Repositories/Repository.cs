@@ -1,11 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MiniEcommerce.Contracts.Interfaces;
 using MiniEcommerce.DataAccessLayer.Context;
-using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MiniEcommerce.DataAccessLayer.Repositories;
 public class Repository<T>(MiniEcommerceDbContext context) : IRepository<T> where T : class

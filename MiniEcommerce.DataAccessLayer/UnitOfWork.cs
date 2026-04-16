@@ -2,12 +2,8 @@
 using MiniEcommerce.Contracts.Interfaces;
 using MiniEcommerce.DataAccessLayer.Context;
 using MiniEcommerce.DataAccessLayer.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MiniEcommerce.DataAccessLayer;
-
 public class UnitOfWork(MiniEcommerceDbContext dbContext) : IUnitOfWork
 {
     private readonly Lazy<IProductRepository> _products = new(() => new ProductRepository(dbContext));

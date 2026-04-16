@@ -6,10 +6,7 @@ using MiniEcommerce.Product.Contracts;
 using MiniEcommerce.Product.DataAccessLayer.Interfaces;
 using ProductEntity = MiniEcommerce.Product.DataAccessLayer.Entities.Product;
 
-
-
 namespace MiniEcommerce.Product.BusinessLogicLayer.Services;
-
 public class ProductService(IUnitOfWork unitOfWork) : IProductService
 {
     private async Task ValidateProductAsync(string name, decimal price, int categoryId, int? excludedProductId, int? currentCategoryId, CancellationToken cancellationToken)

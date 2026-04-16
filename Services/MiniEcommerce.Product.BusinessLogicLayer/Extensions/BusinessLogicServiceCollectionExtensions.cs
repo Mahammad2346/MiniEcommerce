@@ -3,7 +3,6 @@ using MiniEcommerce.Product.BusinessLogicLayer.Interfaces;
 using MiniEcommerce.Product.BusinessLogicLayer.Services;
 
 namespace MiniEcommerce.Product.BusinessLogicLayer.Extensions;
-
 public static class BusinessLogicServiceCollectionExtensions
 {
 	public static IServiceCollection AddBusinessLogicLayer(this IServiceCollection services)

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace MiniEcommerce.BusinessLogicLayer.Dtos;
-
 public record ProductDto
 (
     int Id,

@@ -3,7 +3,6 @@ using MiniEcommerce.Product.DataAccessLayer.Interfaces;
 using MiniEcommerce.Product.DataAccessLayer.Repositories;
 
 namespace MiniEcommerce.Product.DataAccessLayer;
-
 public class UnitOfWork(
 	MiniEcommerceDbContext dbContext,
 	IProductRepository productRepository,

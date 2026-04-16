@@ -4,7 +4,6 @@ using MiniEcommerce.Authorization;
 using MiniEcommerce.BusinessLogicLayer.Dtos;
 using MiniEcommerce.Services;
 
-
 namespace MiniEcommerce.Api.Controllers;
 
 [ApiController]

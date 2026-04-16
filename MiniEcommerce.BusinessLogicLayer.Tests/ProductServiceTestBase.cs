@@ -4,9 +4,6 @@ using MiniEcommerce.BusinessLogicLayer.Services;
 using MiniEcommerce.Contracts.Entities;
 using MiniEcommerce.Contracts.Interfaces;
 using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MiniEcommerce.BusinessLogicLayer.Tests
 {

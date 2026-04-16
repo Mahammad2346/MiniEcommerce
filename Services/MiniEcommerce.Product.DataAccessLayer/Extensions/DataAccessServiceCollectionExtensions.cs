@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MiniEcommerce.Product.DataAccessLayer;
 using MiniEcommerce.Product.DataAccessLayer.Constants;
 using MiniEcommerce.Product.DataAccessLayer.Interfaces;
 using MiniEcommerce.Product.DataAccessLayer.Repositories;

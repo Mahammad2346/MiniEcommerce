@@ -2,7 +2,6 @@
 using ProductEntity = MiniEcommerce.Product.DataAccessLayer.Entities.Product;
 
 namespace MiniEcommerce.Product.DataAccessLayer.Repositories;
-
 public class ProductRepository(MiniEcommerceDbContext dbContext): Repository<ProductEntity>(dbContext), IProductRepository
 {
 	public async Task<IReadOnlyCollection<ProductEntity>> GetProductsAsync(

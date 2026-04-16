@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace MiniEcommerce.Contracts.Interfaces;
-
 public interface IUnitOfWork
 {   
     IProductRepository Products { get; }

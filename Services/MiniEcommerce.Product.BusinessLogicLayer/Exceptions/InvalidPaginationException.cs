@@ -2,7 +2,6 @@
 using System.Net;
 
 namespace MiniEcommerce.Product.BusinessLogicLayer.Exceptions;
-
 public sealed class InvalidPaginationException : AppException
 {
     public InvalidPaginationException(int pageNumber, int pageSize)

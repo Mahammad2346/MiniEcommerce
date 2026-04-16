@@ -2,7 +2,6 @@
 using MiniEcommerce.Product.DataAccessLayer.Interfaces;
 
 namespace MiniEcommerce.Product.DataAccessLayer.Interfaces;
-
 public interface ICategoryRepository : IRepository<Category>
 {
 	Task<IReadOnlyList<Category>> GetAllAsync(

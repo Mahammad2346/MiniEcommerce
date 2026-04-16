@@ -4,7 +4,6 @@ using GrpcProduct = MiniEcommerce.Product.Contracts.Protos.Product;
 using System.Globalization;
 
 namespace ProductService.Mapping;
-
 public class ProductMappingConfig : IRegister
 {
 	public void Register(TypeAdapterConfig config)

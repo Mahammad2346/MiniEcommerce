@@ -9,7 +9,6 @@ using MiniEcommerce.Contracts.Entities;
 using MiniEcommerce.Contracts.Interfaces;
 
 namespace MiniEcommerce.BusinessLogicLayer.Services;
-
 public class ProductService(IUnitOfWork unitOfWork) : IProductService
 {
     private async Task ValidateProductAsync(string name, decimal price, int categoryId, int? excludedProductId, int? currentCategoryId, CancellationToken cancellationToken)

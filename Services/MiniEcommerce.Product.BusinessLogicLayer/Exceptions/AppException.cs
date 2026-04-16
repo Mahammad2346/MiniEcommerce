@@ -1,7 +1,6 @@
 ﻿using System.Net;
 
 namespace MiniEcommerce.Product.BusinessLogicLayer.Exceptions;
-
 public class AppException : Exception
 {
 	public HttpStatusCode StatusCode { get; }

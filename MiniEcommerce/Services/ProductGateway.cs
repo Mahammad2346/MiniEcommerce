@@ -3,7 +3,6 @@ using MiniEcommerce.BusinessLogicLayer.Dtos;
 using MiniEcommerce.Contracts.Protos;
 
 namespace MiniEcommerce.Services;
-
 public class ProductGateway{
 	private readonly ProductGrpc.ProductGrpcClient grpcClient;
 
@@ -144,4 +143,3 @@ public class ProductGateway{
 		return response.Success;
 	}
 }
-	

@@ -1,18 +1,15 @@
-﻿using Grpc.Core;
+﻿using Google.Protobuf;
+using Grpc.Core;
 using Mapster;
-using MiniEcommerce.BusinessLogicLayer.Dtos;
-using GrpcCategory = MiniEcommerce.Contracts.Protos.Category;
-using GrpcProduct = MiniEcommerce.Contracts.Protos.Product;
-using MiniEcommerce.BusinessLogicLayer.Interfaces;
-using MiniEcommerce.BusinessLogicLayer.Services;
-using MiniEcommerce.Contracts.Protos;
+using MiniEcommerce.Product.BusinessLogicLayer.Interfaces;
+using MiniEcommerce.Product.Contracts;
+using MiniEcommerce.Product.Contracts.Protos;
+using System.Globalization;
+using GrpcCategory = MiniEcommerce.Product.Contracts.Protos.Category;
+using GrpcProduct = MiniEcommerce.Product.Contracts.Protos.Product;
+namespace MiniEcommerce.Product.Grpc.Services.Grpc;	
 
-namespace MiniEcommerce.GrpcServices;
-
-public class ProductGrpcService(
-	IProductService productService,
-	ICategoryService categoryService
-) : ProductGrpc.ProductGrpcBase
+public class ProductGrpcService(IProductService productService, ICategoryService categoryService) : ProductGrpc.ProductGrpcBase
 {
 	public override async Task<CreateCategoryResponse> CreateCategory(CreateCategoryRequest request, ServerCallContext context)
 	{
@@ -26,7 +23,6 @@ public class ProductGrpcService(
 			Category = category.Adapt<GrpcCategory>()
 		};
 	}
-
 	public override async Task<GetCategoryResponse> GetCategory(GetCategoryRequest request, ServerCallContext context)
 	{
 		var category = await categoryService.GetCategoryByIdAsync(request.Id, context.CancellationToken);
@@ -39,18 +35,17 @@ public class ProductGrpcService(
 
 	public override async Task<GetCategoriesResponse> GetCategories(GetCategoriesRequest request, ServerCallContext context)
 	{
-		var categories = await categoryService.GetAllCategoriesAsync(
-			request.PageNumber,
-			request.PageSize,
-			context.CancellationToken
-		);
-
+		var category = await categoryService.GetAllCategoriesAsync(
+				request.PageNumber,
+				request.PageSize,
+				context.CancellationToken
+			);
 		var response = new GetCategoriesResponse();
-		response.Categories.AddRange(categories.Adapt<IEnumerable<GrpcCategory>>());
+
+		response.Categories.AddRange(category.Adapt<IEnumerable<GrpcCategory>>());
 
 		return response;
 	}
-
 	public override async Task<GetProductResponse> GetProduct(GetProductRequest request, ServerCallContext context)
 	{
 		var product = await productService.GetProduct(request.Id, context.CancellationToken);
@@ -60,7 +55,6 @@ public class ProductGrpcService(
 			Product = product.Adapt<GrpcProduct>()
 		};
 	}
-
 	public override async Task<GetProductsResponse> GetProducts(GetProductsRequest request, ServerCallContext context)
 	{
 		var products = await productService.GetProductsAsync(
@@ -71,17 +65,17 @@ public class ProductGrpcService(
 		);
 
 		var response = new GetProductsResponse();
+
 		response.Products.AddRange(products.Adapt<IEnumerable<GrpcProduct>>());
 
 		return response;
 	}
-
 	public override async Task<CreateProductResponse> CreateProduct(CreateProductRequest request, ServerCallContext context)
 	{
 		var product = await productService.CreateProductAsync(
 			new CreateProductDto(
 				request.Name,
-				(decimal)request.Price,
+				decimal.Parse(request.Price, CultureInfo.InvariantCulture),
 				request.CategoryId,
 				request.Description
 			),
@@ -94,22 +88,22 @@ public class ProductGrpcService(
 		};
 	}
 
-	public override async Task<UpdateProductResponse> UpdateProduct(UpdateProductRequest request, ServerCallContext context)
+	public override async Task<UpdateProductResponse> UpdateProduct(UpdateProductRequest request,ServerCallContext context)
 	{
 		var product = await productService.UpdateProductAsync(
 			request.Id,
 			new UpdateProductDto(
-				request.Name,
-				(decimal)request.Price,
-				request.Description,
-				request.CategoryId
+				Name: request.Name,
+				Price: decimal.Parse(request.Price, CultureInfo.InvariantCulture),
+				Description: request.Description,
+				CategoryId: request.CategoryId
 			),
 			context.CancellationToken
 		);
 
 		return new UpdateProductResponse
 		{
-			Product = product.Adapt<GrpcProduct>()
+			Product = product.Adapt<GrpcProduct>()	
 		};
 	}
 

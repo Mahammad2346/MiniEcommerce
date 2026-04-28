@@ -2,16 +2,9 @@
 using MiniEcommerce.BusinessLogicLayer.Dtos;
 using MiniEcommerce.BusinessLogicLayer.Exceptions.Category;
 using MiniEcommerce.BusinessLogicLayer.Exceptions.Product;
-using MiniEcommerce.BusinessLogicLayer.Interfaces;
-using MiniEcommerce.BusinessLogicLayer.Services;
 using MiniEcommerce.Contracts.Entities;
-using MiniEcommerce.Contracts.Interfaces;
-using MiniEcommerce.DataAccessLayer;
 using NSubstitute;
-using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace MiniEcommerce.BusinessLogicLayer.Tests
 {
@@ -65,17 +58,16 @@ namespace MiniEcommerce.BusinessLogicLayer.Tests
         [Fact]
         public async Task UpdateProduct_Valid_ShouldUpdateProduct()
         {
+            var category = Fixture.Create<Category>();
+
 			var product = new Product
 			{
 				Id = 1,
 				Name = "Electronics",
 				Price = 100,
-				CategoryId = 1
-			};
-			var category = new Category
-			{
-				Id = 1,
-				Name = "Test Category"
+				CategoryId = 1,
+                Description = "Test description",
+                Category = category
 			};
 			CategoryRepository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Category, bool>>>(), Arg.Any<CancellationToken>()).Returns(category);
 			CategoryRepository.AnyAsync(Arg.Any<Expression<Func<Category, bool>>>(), Arg.Any<CancellationToken>()).Returns(false);
@@ -110,12 +102,15 @@ namespace MiniEcommerce.BusinessLogicLayer.Tests
 
         public async Task DeleteProduct_Valid_ShouldDeleteProduct()
         {
+			var category = Fixture.Create<Category>();
 			var product = new Product
 			{
 				Id = 1,
 				Name = "Electronics",
 				Price = 100,
-				CategoryId = 1
+				CategoryId = 1,
+                Description = "Test",
+                Category = category
 			};
 
 			CategoryRepository.AnyAsync(Arg.Any<Expression<Func<Category, bool>>>(), Arg.Any<CancellationToken>()).Returns(true);

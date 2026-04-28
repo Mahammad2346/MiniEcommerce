@@ -6,7 +6,6 @@ using MiniEcommerce.Contracts.Entities;
 using MiniEcommerce.Contracts.Interfaces;
 
 namespace MiniEcommerce.BusinessLogicLayer.Services;
-
 public class CategoryService(IUnitOfWork unitOfWork) : ICategoryService
 {
     private async Task<Category> GetCategoryOrThrowAsync(int categoryId, CancellationToken cancellationToken)

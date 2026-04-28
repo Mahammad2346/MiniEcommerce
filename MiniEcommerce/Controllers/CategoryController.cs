@@ -2,50 +2,66 @@
 using Microsoft.AspNetCore.Mvc;
 using MiniEcommerce.Authorization;
 using MiniEcommerce.BusinessLogicLayer.Dtos;
-using MiniEcommerce.BusinessLogicLayer.Interfaces;
+using MiniEcommerce.Services;
 
 namespace MiniEcommerce.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class CategoryController(ICategoryService categoryService) : ControllerBase
+public class CategoryController(ProductGateway productGateway) : ControllerBase
 {
-    [HttpGet]
-    [Authorize(Policy = AuthorizationPolicies.ReadCategories)]
-    public async Task<IReadOnlyList<CategoryDto>> GetCategoriesAsync(
-        [FromQuery] int pageNumber = 1,
-        [FromQuery] int pageSize = 10,
-        CancellationToken cancellationToken = default)
-    {
-        return await categoryService.GetAllCategoriesAsync(pageNumber, pageSize, cancellationToken);
-    }
+	[HttpGet]
+	[Authorize(Policy = AuthorizationPolicies.ReadCategories)]
+	public async Task<IReadOnlyList<CategoryDto>> GetCategoriesAsync(
+	[FromQuery] int pageNumber = 1,
+	[FromQuery] int pageSize = 10,
+	CancellationToken cancellationToken = default)
+	{
+		return await productGateway.GetCategories(pageNumber, pageSize, cancellationToken);
+	}
 
-    [HttpGet("{categoryId:int}")]
+	[HttpGet("{categoryId:int}")]
 	[Authorize(Policy = AuthorizationPolicies.ReadCategories)]
 	public async Task<CategoryDto> GetCategoryById([FromRoute] int categoryId, CancellationToken cancellationToken)
-    {
-        return await categoryService.GetCategoryByIdAsync(categoryId, cancellationToken);
-    }
+	{
+		return await productGateway.GetCategoryById(categoryId, cancellationToken);
+	}
 
-    [HttpPost]
+	[HttpPost]
 	[Authorize(Policy = AuthorizationPolicies.WriteCategories)]
-	public async Task<CategoryDto> CreateCategory([FromBody] CreateCategoryDto dto, CancellationToken cancellationToken = default)
-    {
-        return await categoryService.CreateCategoryAsync(dto, cancellationToken);
-    }
+	public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto dto, CancellationToken cancellationToken = default)
+	{
+		var createdCategory = await productGateway.CreateCategory(dto, cancellationToken);
 
-    [HttpPut("{categoryId:int}")]
+		return CreatedAtAction(nameof(GetCategoryById), new { categoryId = createdCategory.Id }, createdCategory);
+	}
+
+	[HttpPut("{categoryId:int}")]
 	[Authorize(Policy = AuthorizationPolicies.WriteCategories)]
 	public async Task<CategoryDto> UpdateCategory([FromRoute] int categoryId, [FromBody] UpdateCategoryDto dto, CancellationToken cancellationToken)
-    {
-       return await categoryService.UpdateCategoryAsync(categoryId, dto, cancellationToken);
-    }
+	{
+		return await productGateway.UpdateCategory(categoryId, dto, cancellationToken);
+	}
 
 	[HttpDelete("{categoryId:int}")]
 	[Authorize(Policy = AuthorizationPolicies.WriteCategories)]
+	public async Task<DeleteResponseDto> DeleteCategory([FromRoute] int categoryId, CancellationToken cancellationToken)
+	{
+		var success = await productGateway.DeleteCategory(categoryId, cancellationToken);
 
-	public async Task<CategoryDto> DeleteCategory([FromRoute] int categoryId, CancellationToken cancellationToken)
-    {
-        return await categoryService.DeleteCategoryAsync(categoryId, cancellationToken);
-    }
+		if (!success)
+		{
+			return new DeleteResponseDto
+			{
+				Success = false,
+				Message = $"Deletion failed. Category with ID {categoryId} not found"
+			};
+		}
+
+		return new DeleteResponseDto
+		{
+			Success = true,
+			Message = "Category deleted successfully"
+		};
+	}
 }

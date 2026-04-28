@@ -7,7 +7,6 @@ using MiniEcommerce.Contracts.Entities;
 using MiniEcommerce.DataAccessLayer.Extensions;
 
 namespace MiniEcommerce.BusinessLogicLayer.Extensions;
-
 public static class BusinessLogicServiceCollectionExtensions
 {
     public static IServiceCollection AddBusinessLogicLayer(

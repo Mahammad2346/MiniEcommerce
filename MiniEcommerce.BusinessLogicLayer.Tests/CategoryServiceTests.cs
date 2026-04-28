@@ -8,7 +8,6 @@ using NSubstitute;
 using System.Linq.Expressions;
 
 namespace MiniEcommerce.BusinessLogicLayer.Tests;
-
 public class CategoryServiceTests : CategoryServiceTestBase
 {
 	[Fact]

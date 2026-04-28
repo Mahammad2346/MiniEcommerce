@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using MiniEcommerce.Authorization;
 
 namespace MiniEcommerce.Extensions;
-
 public static class AuthenticationServiceCollectionExtensions
 {
 	public static IServiceCollection AddAuth0Authentication(this IServiceCollection services, IConfiguration configuration)

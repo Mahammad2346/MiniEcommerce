@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace MiniEcommerce.BusinessLogicLayer.Interfaces;
-
 public interface IProductService
 {
     Task<ProductDto> CreateProductAsync(CreateProductDto dto, CancellationToken cancellationToken);

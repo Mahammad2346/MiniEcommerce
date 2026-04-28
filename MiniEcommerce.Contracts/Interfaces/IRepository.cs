@@ -4,7 +4,6 @@ using System.Linq.Expressions;
 using System.Text;
 
 namespace MiniEcommerce.Contracts.Interfaces;
-
 public interface IRepository<T> where T : class
 {
     Task<IEnumerable<T>> GetAllAsync(int pageNumber, int pageSize, CancellationToken cancellationToken);

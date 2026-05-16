@@ -14,7 +14,7 @@ public class BasketService(IBasketRepository repository) : IBasketService
 	private async Task<ShoppingCartDto> InternalUpdateOrUpdateBasket(string userName, List<ShoppingCartItem> newItems)
 	{
 		var existingCart = await repository.GetBasketByUserName(userName);
-		var cart = existingCart ?? new ShoppingCart (userName);
+		var cart = existingCart ?? new ShoppingCart(userName);
 
 		foreach (var item in newItems)
 		{

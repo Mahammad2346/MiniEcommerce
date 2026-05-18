@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="MiniEcommerce.Basket.API/MiniEcommerce.Basket.API.csproj" Id="8d79636e-c275-4656-a7a9-c66cd2e7bf3d" />
+  <Project Path="MiniEcommerce.Basket.Application/MiniEcommerce.Basket.Application.csproj" Id="16f444ce-533b-4bf5-bf7c-ee05029eca8c" />
+  <Project Path="MiniEcommerce.Basket.Domain/MiniEcommerce.Basket.Domain.csproj" Id="2eb58770-c819-40bb-8454-6cbbbe042e8e" />
+  <Project Path="MiniEcommerce.Basket.Infrastructure/MiniEcommerce.Basket.Infrastructure.csproj" Id="e2b6f04a-b2fd-4e82-b319-787c23c52d50" />
+</Solution>

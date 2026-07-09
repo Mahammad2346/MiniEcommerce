@@ -8,8 +8,8 @@ import { authConfig } from './config'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Auth0Provider
-      domain={domain}
-      clientId={clientId}
+      domain={authConfig.domain}
+      clientId={authConfig.clientId}
       authorizationParams={{
         redirect_uri: globalThis.location.origin
       }}

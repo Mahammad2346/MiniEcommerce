@@ -23,7 +23,17 @@ builder.Services.AddGrpcClient<ProductGrpc.ProductGrpcClient>((sp, options) =>
 	var config = sp.GetRequiredService<IOptions<ProductGrpcOptions>>().Value;
 	options.Address = new Uri(config.Address);
 });
-
+builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -37,9 +47,12 @@ app.UseHttpsRedirection();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
+app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapReverseProxy();
+
 
 await app.RunAsync();

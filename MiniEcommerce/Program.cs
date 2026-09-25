@@ -24,16 +24,21 @@ builder.Services.AddGrpcClient<ProductGrpc.ProductGrpcClient>((sp, options) =>
 	options.Address = new Uri(config.Address);
 });
 builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
+
+var frontendUrl = builder.Configuration["FrontendUrl"]
+    ?? throw new InvalidOperationException("FrontendUrl is missing in configuration");
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins(frontendUrl)
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
     });
 });
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
